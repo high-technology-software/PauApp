@@ -2,16 +2,18 @@ package com.high_technology_software.android.pauapp.controller;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.high_technology_software.android.pauapp.model.CategoryVO;
 import com.high_technology_software.android.pauapp.model.database.DatabaseTableCategory;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CategoryDAO extends GenericDAO {
-    static SQLiteDatabase sqLiteDatabase;
+
     public CategoryDAO(Context context) {
         super(context);
     }
@@ -19,11 +21,27 @@ public class CategoryDAO extends GenericDAO {
     public List<CategoryVO> read() {
         List<CategoryVO> result = new ArrayList<>();
 
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query(DatabaseTableCategory.TABLE_NAME, null, null, null, null, null, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    CategoryVO vo = new CategoryVO(cursor);
+                    result.add(vo);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+
+        sqLiteDatabase.close();
+
         return result;
     }
 
     public boolean create(CategoryVO vo) {
-        sqLiteDatabase = mDatabaseHelper.getWritableDatabase();
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getWritableDatabase();
 
         ContentValues values = DatabaseTableCategory.translate(vo);
 

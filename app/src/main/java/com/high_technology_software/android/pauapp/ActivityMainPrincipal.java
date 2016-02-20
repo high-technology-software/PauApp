@@ -52,6 +52,14 @@ public class ActivityMainPrincipal extends AppCompatActivity {
         CategoryDAO dao = new CategoryDAO(this);
         List<CategoryVO> list = dao.read();
 
+        CategoryVO vo = new CategoryVO();
+        vo.setName("Test");
+        try {
+            dao.create(vo);
+        } catch (Exception e) {
+            Log.e("EX", e.toString());
+        }
+
         //pruebas del Adaptador de Botones
         Button botonesPan = null;
         for (int i = 0; i < 10; i++){
