@@ -3,6 +3,7 @@ package com.high_technology_software.android.pauapp.model.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -12,6 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.d("AQUI", DatabaseTableCategory.CREATE_STATEMENT);
         db.execSQL(DatabaseTableCategory.CREATE_STATEMENT);
         db.execSQL(DatabaseTableItem.CREATE_STATEMENT);
     }

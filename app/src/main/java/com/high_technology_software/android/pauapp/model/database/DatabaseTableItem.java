@@ -13,7 +13,7 @@ public abstract class DatabaseTableItem implements BaseColumns {
     public static final String NAME = "name";
     public static final String AUDIO = "audio";
     public static final String IMAGE = "image";
-    public static final String ORDER = "order";
+    public static final String ORDER = "orden";
     public static final String VISIBLE = "visible";
     public static final String ENABLE = "enable";
     public static final String CREATE_DATE = "createDate";
@@ -29,7 +29,7 @@ public abstract class DatabaseTableItem implements BaseColumns {
             VISIBLE + " INTEGER, " +
             ENABLE + " INTEGER, " +
             CREATE_DATE + " INTEGER, " +
-            MODIFY_DATE + " INTEGER)";
+            MODIFY_DATE + " INTEGER);";
 
     public static final String DROP_STATEMENT = "DROP TABLE IF EXISTS " + TABLE_NAME;
 

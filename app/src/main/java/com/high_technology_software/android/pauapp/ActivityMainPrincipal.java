@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import adaptadors.ButtonAdapter;
-import basesDeDatos.SqlControllerBaseDatosBotones;
 
 public class ActivityMainPrincipal extends AppCompatActivity {
 
@@ -37,7 +36,8 @@ public class ActivityMainPrincipal extends AppCompatActivity {
     private TextView tvAdd;
     private EditText tvName, tvOther,COMMENT;
     //base de datos
-    private SqlControllerBaseDatosBotones sqlControllerBDB =  new SqlControllerBaseDatosBotones(this);
+    //private SqlControllerBaseDatosBotones sqlControllerBDB =  new SqlControllerBaseDatosBotones(this);
+    CategoryDAO baseDatosCategory = new CategoryDAO(this);
     //botones
     private ArrayList<Button> botones = new ArrayList<Button>();
     @Override
@@ -82,15 +82,16 @@ public class ActivityMainPrincipal extends AppCompatActivity {
                         tvOther = (EditText) dialogView.findViewById(R.id.tvOther);
                         //cogemos el valor de los items que hemos instanciado
                         String name = tvName.getText().toString();
-                        String other = tvOther.getText().toString();
+                        //String other = tvOther.getText().toString();
                         //los metemos en la Base de Datos
-                        try {
-                            sqlControllerBDB.open();
-                            sqlControllerBDB.insertData(name, other, "blue");
 
-                        } catch (SQLException e) {
-                            e.printStackTrace();
-                        }
+                        CategoryVO cat = new CategoryVO();
+                        cat.setName(name);
+                        baseDatosCategory.create(cat);
+                        //sqlControllerBDB.open();
+                        //sqlControllerBDB.insertData(name, other, "blue");
+
+
 
                     }
                 });

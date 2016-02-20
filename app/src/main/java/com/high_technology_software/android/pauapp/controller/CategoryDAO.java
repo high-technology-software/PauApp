@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CategoryDAO extends GenericDAO {
-
+    static SQLiteDatabase sqLiteDatabase;
     public CategoryDAO(Context context) {
         super(context);
     }
@@ -23,7 +23,7 @@ public class CategoryDAO extends GenericDAO {
     }
 
     public boolean create(CategoryVO vo) {
-        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getWritableDatabase();
+        sqLiteDatabase = mDatabaseHelper.getWritableDatabase();
 
         ContentValues values = DatabaseTableCategory.translate(vo);
 

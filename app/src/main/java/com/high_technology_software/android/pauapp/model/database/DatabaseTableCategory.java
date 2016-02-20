@@ -10,7 +10,7 @@ public abstract class DatabaseTableCategory implements BaseColumns {
     public static final String TABLE_NAME = "category";
     public static final String ID = "id";
     public static final String NAME = "name";
-    public static final String ORDER = "order";
+    public static final String ORDER = "orden";
     public static final String VISIBLE = "visible";
     public static final String ENABLE = "enable";
     public static final String CREATE_DATE = "createDate";
@@ -20,7 +20,7 @@ public abstract class DatabaseTableCategory implements BaseColumns {
             ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             NAME + " TEXT, " +
             ORDER + " INTEGER, " +
-            VISIBLE + " INTEGER)" +
+            VISIBLE + " INTEGER, " +
             ENABLE + " INTEGER, " +
             CREATE_DATE + " INTEGER, " +
             MODIFY_DATE + " INTEGER)";
