@@ -28,7 +28,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/gridPrincipal"
-                android:numColumns="auto_fit" />
+                android:numColumns="3" />
         </LinearLayout>
     </RelativeLayout>
     <LinearLayout
@@ -43,6 +43,17 @@
             android:layout_height="wrap_content"
             android:text="ADD"
             android:id="@+id/tabBarAdd"
+            android:textSize="30dp"
+            android:background="#ffffff"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:textColor="#000000" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="DELETE"
+            android:id="@+id/tabBarDelete"
             android:textSize="30dp"
             android:background="#ffffff"
             android:gravity="center"

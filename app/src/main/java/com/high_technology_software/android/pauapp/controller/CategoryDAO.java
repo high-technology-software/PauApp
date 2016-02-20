@@ -21,6 +21,7 @@ public class CategoryDAO extends GenericDAO {
     public List<CategoryVO> read() {
         List<CategoryVO> result = new ArrayList<>();
 
+
         SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
 
         Cursor cursor = sqLiteDatabase.query(DatabaseTableCategory.TABLE_NAME, null, null, null, null, null, null);
@@ -63,4 +64,31 @@ public class CategoryDAO extends GenericDAO {
 
         return ack == 1;
     }
+
+
+    public int getLastId (){
+
+        int num = 0;
+        List<CategoryVO> result = new ArrayList<>();
+        //CategoryVO result;
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+        //optimizar
+        Cursor cursor = sqLiteDatabase.rawQuery("Select * from category", null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    CategoryVO vo = new CategoryVO(cursor);
+                    num = vo.getId();
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        sqLiteDatabase.close();
+
+        return num;
+
+    }
+
+
+
 }

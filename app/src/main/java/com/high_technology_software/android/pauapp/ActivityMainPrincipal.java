@@ -2,6 +2,7 @@ package com.high_technology_software.android.pauapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.database.Cursor;
 import android.graphics.Color;
@@ -29,7 +30,7 @@ import java.util.List;
 import adaptadors.ButtonAdapter;
 
 public class ActivityMainPrincipal extends AppCompatActivity {
-
+    //private Context mContext = getApplicationContext();
     private DrawerLayout drawerLayout;
     //variables referentes al xml
     private GridView gvPanelPal;
@@ -50,9 +51,10 @@ public class ActivityMainPrincipal extends AppCompatActivity {
 
         Log.d("ASD", "HERE");
         CategoryDAO dao = new CategoryDAO(this);
-        List<CategoryVO> list = dao.read();
+        List<CategoryVO> listCategory = dao.read();
 
-        CategoryVO vo = new CategoryVO();
+
+        final CategoryVO vo = new CategoryVO();
         vo.setName("Test");
         try {
             dao.create(vo);
@@ -62,10 +64,10 @@ public class ActivityMainPrincipal extends AppCompatActivity {
 
         //pruebas del Adaptador de Botones
         Button botonesPan = null;
-        for (int i = 0; i < 10; i++){
+        for (int i = 0; i < listCategory.size(); i++){
             botonesPan = new Button(this);
             botonesPan.setText(Integer.toString(i));
-            //botonesPan.setOnClickListener();
+
             botonesPan.setId(i);
             botones.add(botonesPan);
 
@@ -79,6 +81,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             public void onClick(View v) {
                 //al pulsar saldrá un alert auxiliar para llenar los campos necesarios para crear
                 //el elemento en el GridView
+                final CategoryDAO categ = new CategoryDAO(getApplicationContext());
                 AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMainPrincipal.this);
                 LayoutInflater inflater = ActivityMainPrincipal.this.getLayoutInflater();
                 final View dialogView = inflater.inflate(R.layout.dialog_form, null);
@@ -87,17 +90,19 @@ public class ActivityMainPrincipal extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         tvName = (EditText) dialogView.findViewById(R.id.tvName);
-                        tvOther = (EditText) dialogView.findViewById(R.id.tvOther);
+
                         //cogemos el valor de los items que hemos instanciado
                         String name = tvName.getText().toString();
-                        //String other = tvOther.getText().toString();
-                        //los metemos en la Base de Datos
+                        //obtener ultimo id
+                        int ultimoId = categ.getLastId();
+                        ultimoId = ultimoId + 1;
+
 
                         CategoryVO cat = new CategoryVO();
+                        cat.setId(ultimoId);
                         cat.setName(name);
+
                         baseDatosCategory.create(cat);
-                        //sqlControllerBDB.open();
-                        //sqlControllerBDB.insertData(name, other, "blue");
 
 
 

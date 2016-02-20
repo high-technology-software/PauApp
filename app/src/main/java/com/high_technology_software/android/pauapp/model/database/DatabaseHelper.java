@@ -13,7 +13,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d("AQUI", DatabaseTableCategory.CREATE_STATEMENT);
+        //Log.d("AQUI", DatabaseTableCategory.CREATE_STATEMENT);
         db.execSQL(DatabaseTableCategory.CREATE_STATEMENT);
         db.execSQL(DatabaseTableItem.CREATE_STATEMENT);
     }
@@ -24,4 +24,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(DatabaseTableCategory.DROP_STATEMENT);
         onCreate(db);
     }
+
+
+
 }
