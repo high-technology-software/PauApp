@@ -9,6 +9,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,8 +19,12 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
+import com.high_technology_software.android.pauapp.controller.CategoryDAO;
+import com.high_technology_software.android.pauapp.model.CategoryVO;
+
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import adaptadors.ButtonAdapter;
 import basesDeDatos.SqlControllerBaseDatosBotones;
@@ -42,6 +47,10 @@ public class ActivityMainPrincipal extends AppCompatActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         tvAdd = (TextView) findViewById(R.id.tabBarAdd);
         gvPanelPal = (GridView) findViewById(R.id.gridPrincipal);
+
+        Log.d("ASD", "HERE");
+        CategoryDAO dao = new CategoryDAO(this);
+        List<CategoryVO> list = dao.read();
 
         //pruebas del Adaptador de Botones
         Button botonesPan = null;
