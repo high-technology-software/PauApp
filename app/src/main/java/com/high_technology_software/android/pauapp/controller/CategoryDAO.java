@@ -65,7 +65,19 @@ public class CategoryDAO extends GenericDAO {
         return ack == 1;
     }
 
+    public boolean delete (CategoryVO vo){
 
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getWritableDatabase();
+
+        ContentValues values = DatabaseTableCategory.translate(vo);
+
+        int ack = sqLiteDatabase.delete(DatabaseTableCategory.TABLE_NAME, DatabaseTableCategory.ID + " = " + vo.getId(), null);
+
+        sqLiteDatabase.close();
+
+        return ack == 1;
+
+    }
     public int getLastId (){
 
         int num = 0;

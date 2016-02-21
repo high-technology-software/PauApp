@@ -30,11 +30,12 @@ import java.util.List;
 import adaptadors.ButtonAdapter;
 
 public class ActivityMainPrincipal extends AppCompatActivity {
+
     //private Context mContext = getApplicationContext();
     private DrawerLayout drawerLayout;
     //variables referentes al xml
     private GridView gvPanelPal;
-    private TextView tvAdd;
+    private TextView tvAdd, tvDelete;
     private EditText tvName, tvOther,COMMENT;
     //base de datos
     //private SqlControllerBaseDatosBotones sqlControllerBDB =  new SqlControllerBaseDatosBotones(this);
@@ -47,6 +48,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
         setContentView(R.layout.activity_activity_main_principal);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         tvAdd = (TextView) findViewById(R.id.tabBarAdd);
+        tvDelete = (TextView) findViewById(R.id.tabBarDelete);
         gvPanelPal = (GridView) findViewById(R.id.gridPrincipal);
 
         Log.d("ASD", "HERE");
@@ -104,11 +106,31 @@ public class ActivityMainPrincipal extends AppCompatActivity {
 
                         baseDatosCategory.create(cat);
 
+                        //reiniciamos el activity para ver nuestro nuevo elemento
+                        finish();
+                        startActivity(getIntent());
 
 
                     }
                 });
                 builder.show();
+            }
+        });
+
+        //tvDelete borrar elementos del panel principal
+        tvDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //// TODO: 21/2/16 ojo por que hay que hacer un activity para seleccionar el 'boton' para borrar
+                //// TODO: 21/2/16 ahora esta puesto para que solo borre el id = 0; lo cual es un problema pero para pruebas de borrado vale.
+                
+                CategoryVO cat = new CategoryVO();
+                cat.setId(0);
+                baseDatosCategory.delete(cat);
+
+                //reiniciamos el activity para ver nuestro nuevo elemento
+                finish();
+                startActivity(getIntent());
             }
         });
     }
