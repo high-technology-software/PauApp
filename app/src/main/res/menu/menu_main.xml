@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:appname="http://schemas.android.com/apk/res-auto" >
+    xmlns:appname="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools">
 
 
 
@@ -8,4 +9,16 @@
         android:icon = "@drawable/ic_drawer"
         android:title="Panel"
         appname:showAsAction="collapseActionView|always"/>
+
+    <item
+        android:id="@+id/action_left"
+        android:orderInCategory="100"
+        android:title="Left"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_right"
+        android:orderInCategory="100"
+        android:title="Right"
+        app:showAsAction="never" />
 </menu>

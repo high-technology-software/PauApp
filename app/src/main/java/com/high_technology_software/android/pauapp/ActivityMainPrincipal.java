@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.support.v4.view.GravityCompat;
@@ -43,7 +44,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
     //botones
     private ArrayList<Button> botones = new ArrayList<Button>();
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_main_principal);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -55,6 +56,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
         CategoryDAO dao = new CategoryDAO(this);
         List<CategoryVO> listCategory = dao.read();
 
+    /*  //innecesario los elementos se crean dinamicamente
 
         final CategoryVO vo = new CategoryVO();
         vo.setName("Test");
@@ -63,14 +65,17 @@ public class ActivityMainPrincipal extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("EX", e.toString());
         }
-
+    */
         //pruebas del Adaptador de Botones
         Button botonesPan = null;
+        int id = 0;
         for (int i = 0; i < listCategory.size(); i++){
+            id = listCategory.get(i).getId();
             botonesPan = new Button(this);
-            botonesPan.setText(Integer.toString(i));
-
-            botonesPan.setId(i);
+            botonesPan.setText(Integer.toString(id));
+            //añadimos el boton al listener
+            botonesPan.setOnClickListener(botonesPanel);
+            botonesPan.setId(id);
             botones.add(botonesPan);
 
         }
@@ -107,9 +112,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
                         baseDatosCategory.create(cat);
 
                         //reiniciamos el activity para ver nuestro nuevo elemento
-                        finish();
-                        startActivity(getIntent());
-
+                        onRestart();
 
                     }
                 });
@@ -121,20 +124,26 @@ public class ActivityMainPrincipal extends AppCompatActivity {
         tvDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //// TODO: 21/2/16 ojo por que hay que hacer un activity para seleccionar el 'boton' para borrar
-                //// TODO: 21/2/16 ahora esta puesto para que solo borre el id = 0; lo cual es un problema pero para pruebas de borrado vale.
-                
+                /*
                 CategoryVO cat = new CategoryVO();
                 cat.setId(0);
                 baseDatosCategory.delete(cat);
-
-                //reiniciamos el activity para ver nuestro nuevo elemento
+                */
+                Intent intent = new Intent(getApplicationContext(), DifferentMenuActivity.class);
                 finish();
-                startActivity(getIntent());
+                startActivity(intent);
+                //reiniciamos el activity para ver nuestro nuevo elemento
+                //finish();
+                //startActivity(getIntent());
             }
         });
     }
-
+    View.OnClickListener botonesPanel = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Log.d("ID DEL BOTON", String.valueOf(v.getId()));
+        }
+    };
 
 
     @Override
@@ -165,6 +174,18 @@ public class ActivityMainPrincipal extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+    @Override
+    protected void onRestart() {
 
+        // TODO Auto-generated method stub
+        super.onRestart();
+        Intent i = new Intent(ActivityMainPrincipal.this, ActivityMainPrincipal.class);
+        startActivity(i);
+        finish();
 
+    }
+
+    public int getIdPaneles(CategoryVO cat) {
+        return cat.getId();
+    }
 }
