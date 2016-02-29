@@ -25,11 +25,11 @@ public abstract class DatabaseTableItem implements BaseColumns {
 
     public static final String DROP_STATEMENT = "DROP TABLE IF EXISTS " + TABLE_NAME;
 
-    public static ContentValues translate(ItemVO vo) {
+    public static ContentValues translate(ItemVO vo, int idFather) {
         ContentValues result = new ContentValues();
 
         result.put(ID, vo.getId());
-        result.put(ID_CATEGORY, vo.getFather().getId());
+        result.put(ID_CATEGORY, idFather);
         result.put(NAME, vo.getName());
         result.put(AUDIO, vo.getAudio());
         result.put(IMAGE, vo.getImage());

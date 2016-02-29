@@ -9,7 +9,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".ActivityMainPrincipal" />
-        <activity android:name=".DifferentMenuActivity"></activity>
+        <activity android:name=".DifferentMenuActivity" />
+        <activity android:name=".ItemsCategoryActivity"></activity>
     </application>
 
 </manifest>
