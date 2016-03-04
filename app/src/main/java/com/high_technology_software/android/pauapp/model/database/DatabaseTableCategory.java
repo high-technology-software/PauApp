@@ -2,7 +2,6 @@ package com.high_technology_software.android.pauapp.model.database;
 
 import android.content.ContentValues;
 import android.provider.BaseColumns;
-import android.text.format.Time;
 
 import com.high_technology_software.android.pauapp.model.CategoryVO;
 

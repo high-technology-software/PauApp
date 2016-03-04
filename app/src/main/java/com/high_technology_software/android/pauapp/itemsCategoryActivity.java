@@ -1,16 +1,12 @@
 package com.high_technology_software.android.pauapp;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -22,44 +18,53 @@ import android.widget.GridView;
 import android.widget.TextView;
 
 import com.high_technology_software.android.pauapp.controller.CategoryDAO;
+import com.high_technology_software.android.pauapp.controller.ItemDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
+import com.high_technology_software.android.pauapp.model.ItemVO;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import adaptadors.ButtonAdapter;
 
-public class ActivityMainPrincipal extends AppCompatActivity {
-
-    //private Context mContext = getApplicationContext();
+public class ItemsCategoryActivity extends AppCompatActivity {
     private DrawerLayout drawerLayout;
-    //variables referentes al xml
-    private GridView gvPanelPal;
-    private TextView tvAdd, tvDelete;
-    private EditText tvName, tvOther,COMMENT;
-    private Button botonesPan = null;
-    //base de datos
-    //private SqlControllerBaseDatosBotones sqlControllerBDB =  new SqlControllerBaseDatosBotones(this);
-    CategoryDAO baseDatosCategory = new CategoryDAO(this);
-    //botones
+    private GridView gridLayoutItems;
+    private TextView tvAdd;
+    private TextView tvDelete;
+    private TextView tvAtras;
+
+    private EditText tvName;
+    ItemDAO baseDatosItems = new ItemDAO(this);
+
+    //array botones por cambiar por otra cosa
     private ArrayList<Button> botones = new ArrayList<Button>();
+
+    private int numeroBoton;
     @Override
-    protected void onCreate(final Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_main_principal);
+        setContentView(R.layout.activity_items_category);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         tvAdd = (TextView) findViewById(R.id.tabBarAdd);
         tvDelete = (TextView) findViewById(R.id.tabBarDelete);
-        gvPanelPal = (GridView) findViewById(R.id.gridPrincipal);
+        tvAtras = (TextView) findViewById(R.id.tabBarAtras);
+        gridLayoutItems = (GridView) findViewById(R.id.gridPrincipalItem);
+        //recuperacion del id
+        Bundle extras = getIntent().getExtras();
 
-        Log.d("ASD", "HERE");
-        CategoryDAO dao = new CategoryDAO(this);
-        List<CategoryVO> listCategory = dao.read();
-
+        if (extras != null) {
+            numeroBoton = extras.getInt("boton");
+        }
+/*
+        Log.e("NUMERO", String.valueOf(getIntent().getExtras().getInt("boton")));
+        numeroBoton = getIntent().getExtras().getInt("boton");
+*/
+        ItemDAO dao = new ItemDAO(this);
+        List<ItemVO> listCategory = dao.read(numeroBoton);
 
         //pruebas del Adaptador de Botones
-
+        Button botonesPan = null;
         int id = 0;
         for (int i = 0; i < listCategory.size(); i++){
             id = listCategory.get(i).getId();
@@ -71,8 +76,16 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             botones.add(botonesPan);
 
         }
-        final ButtonAdapter botPrueba = new ButtonAdapter(botones);
-        gvPanelPal.setAdapter(botPrueba);
+        gridLayoutItems.setAdapter(new ButtonAdapter(botones));
+
+
+        tvAtras.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ActivityMainPrincipal.class);
+                startActivity(intent);
+            }
+        });
 
         //cliclando sobre el textView permitira añadir un elemento en el gridView
         tvAdd.setOnClickListener(new View.OnClickListener() {
@@ -81,9 +94,9 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             public void onClick(View v) {
                 //al pulsar saldrá un alert auxiliar para llenar los campos necesarios para crear
                 //el elemento en el GridView
-                final CategoryDAO categ = new CategoryDAO(getApplicationContext());
-                AlertDialog.Builder builder = new AlertDialog.Builder(ActivityMainPrincipal.this);
-                LayoutInflater inflater = ActivityMainPrincipal.this.getLayoutInflater();
+                final ItemDAO items = new ItemDAO(getApplicationContext());
+                AlertDialog.Builder builder = new AlertDialog.Builder(ItemsCategoryActivity.this);
+                LayoutInflater inflater = ItemsCategoryActivity.this.getLayoutInflater();
                 final View dialogView = inflater.inflate(R.layout.dialog_form, null);
                 builder.setView(dialogView);
                 builder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
@@ -94,48 +107,26 @@ public class ActivityMainPrincipal extends AppCompatActivity {
                         //cogemos el valor de los items que hemos instanciado
                         String name = tvName.getText().toString();
                         //obtener ultimo id
-                        int ultimoId = categ.getLastId();
+                        int ultimoId = items.getLastId();
                         ultimoId = ultimoId + 1;
 
-                        CategoryVO cat = new CategoryVO();
+                        ItemVO cat = new ItemVO();
                         cat.setId(ultimoId);
                         cat.setName(name);
 
-                        baseDatosCategory.create(cat);
+                        baseDatosItems.create(cat, numeroBoton);
 
-                        //añadimos el boton dinamicamente
-                        botonesPan = new Button(getApplicationContext());
-                        botonesPan.setText(Integer.toString(ultimoId));
-                        //añadimos el boton al listener
-                        botonesPan.setOnClickListener(botonesPanel);
-                        botonesPan.setId(ultimoId);
-                        botones.add(botonesPan);
-
-                        botPrueba.notifyDataSetChanged();
                         //reiniciamos el activity para ver nuestro nuevo elemento
-                        //onRestart();
+                        onRestart();
 
                     }
                 });
                 builder.show();
-
-            }
-        });
-
-        //tvDelete borrar elementos del panel principal
-        tvDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Intent intent = new Intent(getApplicationContext(), DifferentMenuActivity.class);
-
-                startActivity(intent);
-                //reiniciamos el activity para ver nuestro nuevo elemento
-                //finish();
-                //startActivity(getIntent());
             }
         });
     }
+
+
     View.OnClickListener botonesPanel = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -144,6 +135,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             Intent intent = new Intent(getApplicationContext(), ItemsCategoryActivity.class);
             //guardamos el id del boton
             intent.putExtra("boton", v.getId());
+            finish();
             startActivity(intent);
             //Log.d("ID DEL BOTON", String.valueOf(v.getId()));
         }
@@ -181,14 +173,13 @@ public class ActivityMainPrincipal extends AppCompatActivity {
     @Override
     protected void onRestart() {
 
+        // TODO Auto-generated method stub
         super.onRestart();
-        Intent i = new Intent(ActivityMainPrincipal.this, ActivityMainPrincipal.class);
+        Intent i = new Intent(ItemsCategoryActivity.this, ItemsCategoryActivity.class);
+        //asi no perdemos el valor del padre
+        i.putExtra("boton", numeroBoton);
         startActivity(i);
         finish();
 
-    }
-
-    public int getIdPaneles(CategoryVO cat) {
-        return cat.getId();
     }
 }
