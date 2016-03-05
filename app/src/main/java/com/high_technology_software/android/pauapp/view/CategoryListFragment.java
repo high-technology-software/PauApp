@@ -5,12 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
-import android.support.v4.app.NavUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -18,14 +13,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.high_technology_software.android.pauapp.R;
 import com.high_technology_software.android.pauapp.controller.CategoryDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
 import com.high_technology_software.android.pauapp.view.item.CategoryItem;
 
-import java.util.Date;
 import java.util.List;
 
 public class CategoryListFragment extends ListFragment {
@@ -60,9 +53,9 @@ public class CategoryListFragment extends ListFragment {
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                FragmentManager fm = getActivity().getSupportFragmentManager();
-                MenuCategoryFragment dialog = MenuCategoryFragment.newInstance();
-                dialog.setTargetFragment(CategoryListFragment.this, REQUEST_ACTION);
+//                FragmentManager fm = getActivity().getSupportFragmentManager();
+//                MenuCategoryFragment dialog = MenuCategoryFragment.newInstance();
+//                dialog.setTargetFragment(CategoryListFragment.this, REQUEST_ACTION);
                 //dialog.show(fm, "request_action");
                 return true;
             }
@@ -71,11 +64,11 @@ public class CategoryListFragment extends ListFragment {
 
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
-        CategoryVO vo = ((CategoryAdapter) getListAdapter()).getItem(position);
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        EditCategoryFragment dialog = EditCategoryFragment.newInstance(vo.getName(), position);
-        dialog.setTargetFragment(CategoryListFragment.this, REQUEST_NAME);
-        dialog.show(fm, "asd");
+//        CategoryVO vo = ((CategoryAdapter) getListAdapter()).getItem(position);
+//        FragmentManager fm = getActivity().getSupportFragmentManager();
+//        EditCategoryFragment dialog = EditCategoryFragment.newInstance(vo.getName(), position);
+//        dialog.setTargetFragment(CategoryListFragment.this, REQUEST_NAME);
+//        dialog.show(fm, "asd");
     }
 
     private class CategoryAdapter extends ArrayAdapter<CategoryVO> {
@@ -156,9 +149,9 @@ public class CategoryListFragment extends ListFragment {
             mList.get(position).setName(name);
             mAdapter.notifyDataSetChanged();
         } else if (requestCode == REQUEST_ACTION) {
-            String action = (String) data.getSerializableExtra(MenuCategoryFragment.EXTRA_ACTION);
-            Intent i = new Intent(getContext(), ManageActivity.class);
-            startActivity(i);
+        /*    String action = (String) data.getSerializableExtra(MenuCategoryFragment.EXTRA_ACTION);
+            Intent i = new Intent(getContext(), ManageActivity2.class);
+            startActivity(i);*/
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

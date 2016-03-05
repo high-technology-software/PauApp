@@ -7,7 +7,8 @@
     <string name="button_order">Ordenar</string>
     <string name="dialog_category_title">Canviar nom de la categoria</string>
     <string name="dialog_category_menu_title">Escull una acció</string>
-    <string name="dialog_category_menu_add">Afegir</string>
-    <string name="dialog_category_menu_save">Guardar</string>
-    <string name="dialog_category_menu_cancel">Cancel·lar</string>
+    <string name="category_menu_dialog_add">Afegir categoria</string>
+    <string name="category_menu_dialog_save">Guardar</string>
+    <string name="category_menu_dialog_exit">Sortir</string>
+    <string name="title_activity_manage">ManageActivity</string>
 </resources>

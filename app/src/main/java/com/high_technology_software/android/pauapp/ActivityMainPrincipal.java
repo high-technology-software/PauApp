@@ -12,10 +12,12 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -49,9 +51,17 @@ public class ActivityMainPrincipal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_main_principal);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
         tvAdd = (TextView) findViewById(R.id.tabBarAdd);
         tvDelete = (TextView) findViewById(R.id.tabBarDelete);
         gvPanelPal = (GridView) findViewById(R.id.gridPrincipal);
+        gvPanelPal.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Log.d("asd", "asd");
+                return false;
+            }
+        });
 
         Log.d("ASD", "HERE");
         CategoryDAO dao = new CategoryDAO(this);
@@ -190,5 +200,14 @@ public class ActivityMainPrincipal extends AppCompatActivity {
 
     public int getIdPaneles(CategoryVO cat) {
         return cat.getId();
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        menu.setHeaderTitle("Context Menu");
+        menu.add(0, v.getId(), 0, "Action 1");
+        menu.add(0, v.getId(), 0, "Action 2");
+        menu.add(0, v.getId(), 0, "Action 3");
     }
 }

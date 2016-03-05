@@ -3,21 +3,15 @@ package com.high_technology_software.android.pauapp.view;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.util.Log;
 import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.high_technology_software.android.pauapp.R;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class EditCategoryFragment extends DialogFragment {
 
@@ -57,10 +51,10 @@ public class EditCategoryFragment extends DialogFragment {
 
         mName = (String)getArguments().getSerializable(EXTRA_NAME);
 
-        View v = getActivity().getLayoutInflater().inflate(R.layout.dialog_category, null);
+        View v = getActivity().getLayoutInflater().inflate(R.layout.manage_menu_category_activity, null);
 
-        mEditText = (EditText)v.findViewById(R.id.dialog_category_name);
-        mEditText.setText(mName);
+//        mEditText = (EditText)v.findViewById(R.id.categoryCrud);
+//        mEditText.setText(mName);
 
         return new AlertDialog.Builder(getActivity())
                 .setView(v)
@@ -70,7 +64,7 @@ public class EditCategoryFragment extends DialogFragment {
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                mName = mEditText.getText().toString();
+//                                mName = mEditText.getText().toString();
                                 sendResult(Activity.RESULT_OK);
                             }
                         })
