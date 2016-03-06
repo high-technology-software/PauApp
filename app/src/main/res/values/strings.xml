@@ -1,4 +1,14 @@
 <resources>
     <string name="app_name">PauApp</string>
     <string name="action_settings">Settings</string>
+    <string name="title_category">Accions sobre categories</string>
+    <string name="title_item">Accions sobre fills</string>
+    <string name="button_crud">Gestionar</string>
+    <string name="button_order">Ordenar</string>
+    <string name="dialog_category_title">Canviar nom de la categoria</string>
+    <string name="dialog_category_menu_title">Escull una acció</string>
+    <string name="category_menu_dialog_add">Afegir categoria</string>
+    <string name="category_menu_dialog_save">Guardar</string>
+    <string name="category_menu_dialog_exit">Sortir</string>
+    <string name="title_activity_manage">ManageActivity</string>
 </resources>
