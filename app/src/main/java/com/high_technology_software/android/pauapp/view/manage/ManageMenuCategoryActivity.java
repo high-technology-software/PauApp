@@ -1,5 +1,6 @@
 package com.high_technology_software.android.pauapp.view.manage;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -233,10 +234,7 @@ public class ManageMenuCategoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int nume = item.getItemId();
-        Intent intent1 = new Intent(this, ManageMenuActivity.class);
-        this.startActivity(intent1);
-
+        finish();
         return true;
     }
 

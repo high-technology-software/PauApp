@@ -11,8 +11,8 @@
         <activity android:name=".ActivityMainPrincipal"/>
         <activity android:name=".DifferentMenuActivity"/>
         <activity android:name=".ItemsCategoryActivity"/>
-        <activity android:name=".view.manage.ManageMenuActivity"/>
-        <activity android:name=".view.manage.ManageMenuCategoryActivity"/>
+        <activity android:name=".view.manage.ManageMenuActivity" android:screenOrientation="userPortrait"/>
+        <activity android:name=".view.manage.ManageMenuCategoryActivity" android:screenOrientation="userPortrait"/>
         <activity
             android:name=".view.ManageActivity"
             android:label="@string/title_activity_manage"
