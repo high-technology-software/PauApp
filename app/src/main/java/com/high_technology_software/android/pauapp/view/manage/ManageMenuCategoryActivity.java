@@ -1,20 +1,19 @@
 package com.high_technology_software.android.pauapp.view.manage;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.text.method.CharacterPickerDialog;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -23,21 +22,26 @@ import android.widget.TextView;
 import com.high_technology_software.android.pauapp.R;
 import com.high_technology_software.android.pauapp.controller.CategoryDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
-import com.high_technology_software.android.pauapp.view.EditCategoryFragment;
 import com.high_technology_software.android.pauapp.view.item.CategoryItem;
 
 import java.util.List;
 
-public class ManageMenuCategoryActivity extends Activity {
+public class ManageMenuCategoryActivity extends AppCompatActivity {
 
     private List<CategoryVO> mList;
     private CategoryDAO mDao;
     private CategoryAdapter mAdapter;
 
+    //toolbar
+    private DrawerLayout drawerLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_menu_category_activity);
+
+        //toolbar
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_manage_cat_atc);
 
         mDao = new CategoryDAO(getApplicationContext());
         mList = mDao.read();
@@ -87,14 +91,15 @@ public class ManageMenuCategoryActivity extends Activity {
                 final View dialogView = inflater.inflate(R.layout.category_menu_dialog, null);
                 dialogBuilder.setView(dialogView);
 
-                Button buttonAdd = (Button) dialogView.findViewById(R.id.dialog_menu_category_add);
-                buttonAdd.setOnClickListener(new View.OnClickListener() {
+                EditText editText = (EditText) dialogView.findViewById(R.id.dialog_menu_category_add);
+                /*
+                editText.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         //TODO: implementar crear un nuevo dialogo para crear una nueva categoria
                     }
                 });
-
+                */
                 dialogBuilder.setTitle(R.string.dialog_category_menu_title);
                 dialogBuilder.setPositiveButton(R.string.category_menu_dialog_save, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -182,4 +187,57 @@ public class ManageMenuCategoryActivity extends Activity {
             return convertView;
         }
     }
+
+
+    //toolbar
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        final android.support.v7.app.ActionBar supportAB = getSupportActionBar();
+        supportAB.setHomeAsUpIndicator(R.drawable.ic_change_history_black_24dp);
+        supportAB.setDisplayHomeAsUpEnabled(true);
+
+        //drawer layout (tabbar)
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_manage_cat_atc);
+
+        return true;
+    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        int id= item.getItemId();
+//
+//
+//        if (id == android.R.id.home){
+//            Log.d("BUSCAR", "HOLA");
+//            Intent intent = new Intent(getApplicationContext(), SingleFragmentActivity.class);
+//            this.startActivity(intent);
+//
+//        }
+//
+//
+//        /*
+//        switch (id) {
+//            case android.R.id.home:   ///drawer al pulsar icono si está abierto lo cierro, si está cerrado lo abro
+//                if(drawerLayout.isDrawerOpen(GravityCompat.START))
+//                    drawerLayout.closeDrawers();
+//                else
+//                    drawerLayout.openDrawer(GravityCompat.START);
+//
+//        }
+//        */
+//
+//        //return super.onOptionsItemSelected(item);
+//    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int nume = item.getItemId();
+        Intent intent1 = new Intent(this, ManageMenuActivity.class);
+        this.startActivity(intent1);
+
+        return true;
+    }
+
 }
