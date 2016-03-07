@@ -16,9 +16,11 @@ public class SoundPlayer {
     private int po = 0;
     private Context mContext;
     private int nu = 0;
+    private boolean isActive;
 
     private SoundPlayer(Context context){
         mContext = context;
+        isActive = false;
     }
     public static SoundPlayer getInstance(Context context) {
         if (INSTANCIA == null){
@@ -40,6 +42,7 @@ public class SoundPlayer {
         pp = MediaPlayer.create(mContext, path);
         nu=0;
         pp.start();
+        isActive = true;
     }
     public void sonido (Uri path){
         //pasar ruta
@@ -47,6 +50,7 @@ public class SoundPlayer {
         pp = MediaPlayer.create(mContext, path);
         nu=0;
         pp.start();
+        isActive = true;
     }
     public void pause (View v){
         if(pp!=null && pp.isPlaying()){
@@ -54,6 +58,7 @@ public class SoundPlayer {
             //btn2.setText ("Reaunudar");
             pp.pause();
             nu= 1;
+            isActive = false;
         }
     }
     public void pause (){
@@ -62,6 +67,7 @@ public class SoundPlayer {
             //btn2.setText ("Reaunudar");
             pp.pause();
             nu= 1;
+            isActive = false;
         }
     }
     public void detener (View v){
@@ -70,6 +76,7 @@ public class SoundPlayer {
             po=0;
             nu=0;
             limpiarMP();
+            isActive = false;
         }
     }
     public void detener (){
@@ -78,6 +85,14 @@ public class SoundPlayer {
             po=0;
             nu=0;
             limpiarMP();
+            isActive = false;
         }
+    }
+
+    public boolean canExit() {
+        if (!pp.isPlaying()) {
+            isActive = false;
+        }
+        return !isActive;
     }
 }
