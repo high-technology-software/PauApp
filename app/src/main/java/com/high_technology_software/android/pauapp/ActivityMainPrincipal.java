@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Environment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -22,10 +23,18 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.high_technology_software.android.pauapp.controller.CategoryDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +60,24 @@ public class ActivityMainPrincipal extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_main_principal);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //crear carpeta inicio para categorias e items
+        File directorio = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU");
+        String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU/";
+        if (!directorio.exists()){
+            directorio.mkdir();
+            //generamos password
+            generarFichero(path);
+        }
+
+        //pruebas 7/04/16 lectura fechero
+        if (leerFichero(path).equals("1234")){
+            Log.d("OLE", "OLE");
+        } else {
+            Log.d("mal", "mal");
+        }
+
+
 
         tvAdd = (TextView) findViewById(R.id.tabBarAdd);
         tvDelete = (TextView) findViewById(R.id.tabBarDelete);
@@ -209,5 +236,43 @@ public class ActivityMainPrincipal extends AppCompatActivity {
         menu.add(0, v.getId(), 0, "Action 1");
         menu.add(0, v.getId(), 0, "Action 2");
         menu.add(0, v.getId(), 0, "Action 3");
+    }
+
+
+    //crear fichero pass primera vez
+    private void generarFichero(String path){
+        try {
+
+            FileWriter fichero = new FileWriter(path+"password.txt");
+            fichero.append("1234");
+            fichero.flush();
+            fichero.close();
+            Toast.makeText(this, "Saved", Toast.LENGTH_SHORT).show();
+
+        }catch (IOException e) {
+            System.err.println(e.getMessage());
+        }
+    }
+
+    private String leerFichero(String path){
+
+        File file = new File(path,"password.txt");
+        StringBuilder text = new StringBuilder();
+
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                text.append(line);
+            }
+            br.close();
+            Log.d("PASS", text.toString());
+        }
+        catch (IOException e) {
+            //You'll need to add proper error handling here
+
+        }
+        return text.toString();
     }
 }

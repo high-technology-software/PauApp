@@ -1,6 +1,5 @@
 package com.high_technology_software.android.pauapp.view.manage;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -41,8 +40,6 @@ public class ManageMenuCategoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.manage_menu_category_activity);
 
-        //toolbar
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_manage_cat_atc);
 
         mDao = new CategoryDAO(getApplicationContext());
         mList = mDao.read();
@@ -195,13 +192,7 @@ public class ManageMenuCategoryActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-        final android.support.v7.app.ActionBar supportAB = getSupportActionBar();
-        supportAB.setHomeAsUpIndicator(R.drawable.ic_change_history_black_24dp);
-        supportAB.setDisplayHomeAsUpEnabled(true);
-
-        //drawer layout (tabbar)
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout_manage_cat_atc);
-
+        finish();
         return true;
     }
 //
