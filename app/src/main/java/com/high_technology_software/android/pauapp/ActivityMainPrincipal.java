@@ -27,6 +27,8 @@ import android.widget.Toast;
 
 import com.high_technology_software.android.pauapp.controller.CategoryDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
+import com.high_technology_software.android.pauapp.view.manage.ManageMenuActivity;
+import com.high_technology_software.android.pauapp.view.manage.ManageMenuCategoryActivity;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -47,8 +49,8 @@ public class ActivityMainPrincipal extends AppCompatActivity {
     private DrawerLayout drawerLayout;
     //variables referentes al xml
     private GridView gvPanelPal;
-    private TextView tvAdd, tvDelete;
-    private EditText tvName, tvOther,COMMENT;
+    private TextView tvAdd, tvDelete, tvAdmin;
+    private EditText tvName;
     private Button botonesPan = null;
     //base de datos
     //private SqlControllerBaseDatosBotones sqlControllerBDB =  new SqlControllerBaseDatosBotones(this);
@@ -81,6 +83,9 @@ public class ActivityMainPrincipal extends AppCompatActivity {
 
         tvAdd = (TextView) findViewById(R.id.tabBarAdd);
         tvDelete = (TextView) findViewById(R.id.tabBarDelete);
+        //admin
+        tvAdmin = (TextView) findViewById(R.id.tabBarAdmin);
+
         gvPanelPal = (GridView) findViewById(R.id.gridPrincipal);
         gvPanelPal.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -172,6 +177,15 @@ public class ActivityMainPrincipal extends AppCompatActivity {
                 //startActivity(getIntent());
             }
         });
+
+        tvAdmin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ManageMenuActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
     View.OnClickListener botonesPanel = new View.OnClickListener() {
         @Override

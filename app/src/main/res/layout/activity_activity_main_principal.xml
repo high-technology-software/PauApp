@@ -59,6 +59,15 @@
             android:gravity="center"
             android:paddingTop="10dp"
             android:textColor="#000000" />
-
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="ADMIN"
+            android:id="@+id/tabBarAdmin"
+            android:textSize="30dp"
+            android:background="#ffffff"
+            android:gravity="center"
+            android:paddingTop="10dp"
+            android:textColor="#000000" />
     </LinearLayout>
 </android.support.v4.widget.DrawerLayout>
