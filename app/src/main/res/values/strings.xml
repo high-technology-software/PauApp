@@ -6,9 +6,12 @@
     <string name="button_crud">Gestionar</string>
     <string name="button_order">Ordenar</string>
     <string name="dialog_category_title">Canviar nom de la categoria</string>
-    <string name="dialog_category_menu_title">Escull una acció</string>
     <string name="category_menu_dialog_add">Afegir categoria</string>
     <string name="category_menu_dialog_save">Guardar</string>
     <string name="category_menu_dialog_exit">Sortir</string>
     <string name="title_activity_manage">ManageActivity</string>
+    <string name="manage_menu_category_dialog_edit_header">Canviar nom de la categoria</string>
+    <string name="manage_menu_category_dialog_delete">Eliminar categoria ?</string>
+    <string name="cancel">Cancelar</string>
+    <string name="delete">Eliminar</string>
 </resources>
