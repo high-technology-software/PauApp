@@ -76,7 +76,7 @@ public class ItemsCategoryActivity extends AppCompatActivity {
             botones.add(botonesPan);
 
         }
-        gridLayoutItems.setAdapter(new ButtonAdapter(botones));
+        gridLayoutItems.setAdapter(new ButtonAdapter(botones, this));
 
 
         tvAtras.setOnClickListener(new View.OnClickListener() {

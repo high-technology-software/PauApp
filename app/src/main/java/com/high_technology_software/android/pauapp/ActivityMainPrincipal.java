@@ -108,7 +108,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             botones.add(botonesPan);
 
         }
-        final ButtonAdapter botPrueba = new ButtonAdapter(botones);
+        final ButtonAdapter botPrueba = new ButtonAdapter(botones, this);
         gvPanelPal.setAdapter(botPrueba);
 
         //cliclando sobre el textView permitira añadir un elemento en el gridView
