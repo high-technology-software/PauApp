@@ -2,9 +2,13 @@ package com.high_technology_software.android.pauapp;
 
 import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -28,7 +32,9 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
     private static final int MAX_HEIGHT = 768;
 
     //sonido
-    private SoundPlayer mPlayer = SoundPlayer.getInstance(this);
+    //obtener el path del sonido TODO provisional estatica
+    private SoundPlayer mPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +52,11 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU/item_prueba/minion.png";
         File ruta = new File(path);
 
-        //obtener el path del sonido TODO provisional estatica
-        final String pathSound = Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU/item_prueba/criatura.mp3";
+        //sonido
+        String pathSound = Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU/item_prueba/prueba.m4a";
         final Uri uriSound = stringToUri(pathSound);
+        mPlayer = new SoundPlayer(this, uriSound);
+
         int size = (int) Math.ceil(Math.sqrt(MAX_WIDTH * MAX_HEIGHT));
         Picasso.with(im.getContext())
                 .load(ruta)
@@ -60,7 +68,9 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
         bot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPlayer.sonido(v, uriSound);
+                if (!mPlayer.isPlaying()) {
+                    mPlayer.play();
+                }
             }
         });
     }
@@ -78,5 +88,29 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
         return stringUri;
     }
 
+
+    //toolbar
+    //TODO ir a otra activity desde el toolbar
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        final android.support.v7.app.ActionBar supportAB = getSupportActionBar();
+        //seleccionamos el tipo de icono a mostrar
+        supportAB.setHomeAsUpIndicator(R.drawable.ic_change_history_black_24dp);
+        //dibujamos la flecha
+        supportAB.setDisplayHomeAsUpEnabled(true);
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (!mPlayer.isPlaying()){
+            //volvemos a la pantalla de inicio
+            finish();
+
+        }
+        return true;
+    }
 
 }
