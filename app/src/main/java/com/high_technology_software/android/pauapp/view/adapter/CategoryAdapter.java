@@ -10,8 +10,10 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.high_technology_software.android.pauapp.R;
+import com.high_technology_software.android.pauapp.controller.CategoryDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
 import com.high_technology_software.android.pauapp.view.item.CategoryItem;
 
@@ -22,12 +24,14 @@ public class CategoryAdapter extends ArrayAdapter<CategoryVO> {
     private List<CategoryVO> mList;
     private Context mContext;
     private LayoutInflater mLayoutInflater;
+    private CategoryDAO mDAO;
 
     public CategoryAdapter(Context context, List<CategoryVO> list, LayoutInflater layoutInflater) {
         super(context, 0, list);
         mList = list;
         mContext = context;
         mLayoutInflater = layoutInflater;
+        mDAO = new CategoryDAO(context);
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -45,21 +49,13 @@ public class CategoryAdapter extends ArrayAdapter<CategoryVO> {
         item.getUp().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CategoryVO current = mList.get(position);
-                CategoryVO target = mList.get(position - 1);
-                mList.set(position - 1, current);
-                mList.set(position, target);
-                notifyDataSetChanged();
+                swap(position, position - 1);
             }
         });
         item.getDown().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CategoryVO current = mList.get(position);
-                CategoryVO target = mList.get(position + 1);
-                mList.set(position + 1, current);
-                mList.set(position, target);
-                notifyDataSetChanged();
+                swap(position, position + 1);
             }
         });
 
@@ -73,6 +69,7 @@ public class CategoryAdapter extends ArrayAdapter<CategoryVO> {
         } else {
             item.getDown().setVisibility(View.VISIBLE);
         }
+
         item.getName().setText(mList.get(position).getName());
         item.getName().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,8 +87,13 @@ public class CategoryAdapter extends ArrayAdapter<CategoryVO> {
                 dialogBuilder.setPositiveButton("Acceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         vo.setName(editText.getText().toString());
-                        mList.set(position, vo);
-                        notifyDataSetChanged();
+
+                        if (mDAO.update(vo)) {
+                            mList.set(position, vo);
+                            notifyDataSetChanged();
+                        } else {
+                            Toast.makeText(mContext, R.string.manage_menu_category_activity_unique, Toast.LENGTH_LONG).show();
+                        }
                     }
                 });
                 dialogBuilder.setNegativeButton("Cancel·lar", new DialogInterface.OnClickListener() {
@@ -109,8 +111,16 @@ public class CategoryAdapter extends ArrayAdapter<CategoryVO> {
                 dialogBuilder.setTitle(R.string.manage_menu_category_dialog_delete);
                 dialogBuilder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
-                        mList.remove(position);
-                        notifyDataSetChanged();
+                        if (mDAO.delete(mList.get(position))) {
+                            mList.remove(position);
+                            notifyDataSetChanged();
+
+                            for (int index = position; index < mList.size(); index++) {
+                                CategoryVO vo = mList.get(index);
+                                vo.setOrder(index);
+                                mDAO.update(vo);
+                            }
+                        }
                     }
                 });
                 dialogBuilder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
@@ -124,6 +134,21 @@ public class CategoryAdapter extends ArrayAdapter<CategoryVO> {
         });
 
         return convertView;
+    }
+
+    private void swap(int from, int to) {
+        CategoryVO fromVO = mList.get(from);
+        CategoryVO toVO = mList.get(to);
+
+        fromVO.setOrder(to);
+        toVO.setOrder(from);
+
+        mDAO.update(fromVO);
+        mDAO.update(toVO);
+
+        mList.set(from, toVO);
+        mList.set(to, fromVO);
+        notifyDataSetChanged();
     }
 
 }

@@ -8,7 +8,7 @@ public class CategoryVO {
 
     private int id;
     private String name;
-    private Integer order;
+    private int order;
 
     public CategoryVO() {
 
@@ -36,11 +36,11 @@ public class CategoryVO {
         this.name = name;
     }
 
-    public Integer getOrder() {
+    public int getOrder() {
         return order;
     }
 
-    public void setOrder(Integer order) {
+    public void setOrder(int order) {
         this.order = order;
     }
 }

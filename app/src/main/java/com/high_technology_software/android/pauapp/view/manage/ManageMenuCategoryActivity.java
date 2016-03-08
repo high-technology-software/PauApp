@@ -1,31 +1,22 @@
 package com.high_technology_software.android.pauapp.view.manage;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.high_technology_software.android.pauapp.R;
 import com.high_technology_software.android.pauapp.controller.CategoryDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
 import com.high_technology_software.android.pauapp.view.adapter.CategoryAdapter;
-import com.high_technology_software.android.pauapp.view.item.CategoryItem;
 
 import java.util.List;
 
@@ -35,6 +26,9 @@ public class ManageMenuCategoryActivity extends AppCompatActivity {
     private CategoryDAO mDao;
     private CategoryAdapter mAdapter;
 
+    private EditText mEditText;
+    private ImageButton mImageButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,15 +37,15 @@ public class ManageMenuCategoryActivity extends AppCompatActivity {
         mDao = new CategoryDAO(getApplicationContext());
         mList = mDao.read();
 
-        for (int i = 0; i < 100; i++) {
-            CategoryVO vo = new CategoryVO();
-            vo.setName("Item -> " + i);
-            mList.add(vo);
-        }
         mAdapter = new CategoryAdapter(ManageMenuCategoryActivity.this, mList, getLayoutInflater());
 
         ListView listView = (ListView) findViewById(R.id.manage_menu_category_activity_list);
         listView.setAdapter(mAdapter);
+
+        mEditText = (EditText) findViewById(R.id.manage_menu_category_activity_editText);
+
+        mImageButton = (ImageButton) findViewById(R.id.manage_menu_category_activity_button);
+        mImageButton.setOnClickListener(addListener);
     }
 
     @Override
@@ -72,5 +66,28 @@ public class ManageMenuCategoryActivity extends AppCompatActivity {
         finish();
         return true;
     }
+
+    View.OnClickListener addListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int order = mDao.sequence() + 1;
+
+            CategoryVO vo = new CategoryVO();
+            vo.setName(mEditText.getText().toString());
+            vo.setOrder(order);
+
+            long id = mDao.create(vo);
+
+            if (id == -1) {
+                Toast.makeText(getApplicationContext(), R.string.manage_menu_category_activity_unique, Toast.LENGTH_LONG).show();
+            } else {
+                vo.setId((int) id);
+                mList.add(vo);
+                mAdapter.notifyDataSetChanged();
+            }
+
+            mEditText.setText("");
+        }
+    };
 
 }

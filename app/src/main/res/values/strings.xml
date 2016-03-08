@@ -14,4 +14,5 @@
     <string name="manage_menu_category_dialog_delete">Eliminar categoria ?</string>
     <string name="cancel">Cancelar</string>
     <string name="delete">Eliminar</string>
+    <string name="manage_menu_category_activity_unique">El nom de la categoria ja existeix</string>
 </resources>

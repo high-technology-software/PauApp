@@ -19,7 +19,7 @@ public abstract class DatabaseTableCategory implements BaseColumns {
 
     public static final String CREATE_STATEMENT = "CREATE TABLE " + TABLE_NAME + " (" +
             ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            NAME + " TEXT, " +
+            NAME + " TEXT UNIQUE, " +
             ORDER + " INTEGER)";
 
     public static final String DROP_STATEMENT = "DROP TABLE IF EXISTS " + TABLE_NAME;
@@ -27,7 +27,6 @@ public abstract class DatabaseTableCategory implements BaseColumns {
     public static ContentValues translate(CategoryVO vo) {
         ContentValues result = new ContentValues();
 
-        result.put(ID, vo.getId());
         result.put(NAME, vo.getName());
         result.put(ORDER, vo.getOrder());
 
