@@ -76,7 +76,7 @@ public class ItemsCategoryActivity extends AppCompatActivity {
             botones.add(botonesPan);
 
         }
-        gridLayoutItems.setAdapter(new ButtonAdapter(botones));
+        gridLayoutItems.setAdapter(new ButtonAdapter(botones, this));
 
 
         tvAtras.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +132,7 @@ public class ItemsCategoryActivity extends AppCompatActivity {
         public void onClick(View v) {
             //Donde o lo que queremos que haga al pulsar el boton
             //habria que mirar si el usuario que se loguea es admin ya que habria que lanzar otro activity o ocultar elementos
-            Intent intent = new Intent(getApplicationContext(), ItemsCategoryActivity.class);
+            Intent intent = new Intent(getApplicationContext(), ActivitySonidoImagenText.class);
             //guardamos el id del boton
             intent.putExtra("boton", v.getId());
             finish();

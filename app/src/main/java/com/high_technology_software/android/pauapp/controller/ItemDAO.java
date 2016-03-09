@@ -74,7 +74,8 @@ public class ItemDAO extends GenericDAO {
         Cursor cursor = sqLiteDatabase.rawQuery("Select Max(id) from item", null);
         if (cursor != null) {
             if (cursor.moveToFirst()) {
-                result = cursor.getInt(1);
+                //ojo es el elemento 0
+                result = cursor.getInt(0);
             }
             cursor.close();
         }
