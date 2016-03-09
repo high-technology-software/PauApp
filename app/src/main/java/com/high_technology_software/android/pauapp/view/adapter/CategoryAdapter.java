@@ -86,12 +86,14 @@ public class CategoryAdapter extends ArrayAdapter<CategoryVO> {
                 dialogBuilder.setTitle(R.string.dialog_category_title);
                 dialogBuilder.setPositiveButton("Acceptar", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
+                        String backupName = vo.getName();
                         vo.setName(editText.getText().toString());
 
                         if (mDAO.update(vo)) {
                             mList.set(position, vo);
                             notifyDataSetChanged();
                         } else {
+                            vo.setName(backupName);
                             Toast.makeText(mContext, R.string.manage_menu_category_activity_unique, Toast.LENGTH_LONG).show();
                         }
                     }

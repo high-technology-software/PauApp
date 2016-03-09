@@ -9,7 +9,8 @@ import android.widget.LinearLayout;
 import com.high_technology_software.android.pauapp.R;
 import com.high_technology_software.android.pauapp.view.manage.ManageMenuActivity;
 
-public class ManageActivity extends Activity {
+public class
+ManageActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
