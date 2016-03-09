@@ -21,10 +21,9 @@ public class CategoryDAO extends GenericDAO {
     public List<CategoryVO> read() {
         List<CategoryVO> result = new ArrayList<>();
 
-
         SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
 
-        Cursor cursor = sqLiteDatabase.query(DatabaseTableCategory.TABLE_NAME, null, null, null, null, null, null);
+        Cursor cursor = sqLiteDatabase.query(DatabaseTableCategory.TABLE_NAME, null, null, null, null, null, DatabaseTableCategory.ORDER);
 
         if (cursor != null) {
             if (cursor.moveToFirst()) {
@@ -41,16 +40,16 @@ public class CategoryDAO extends GenericDAO {
         return result;
     }
 
-    public boolean create(CategoryVO vo) {
+    public long create(CategoryVO vo) {
         SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getWritableDatabase();
 
         ContentValues values = DatabaseTableCategory.translate(vo);
 
-        long ack = sqLiteDatabase.insert(DatabaseTableCategory.TABLE_NAME, null, values);
+        long id = sqLiteDatabase.insert(DatabaseTableCategory.TABLE_NAME, null, values);
 
         sqLiteDatabase.close();
 
-        return ack != -1;
+        return id;
     }
 
     public boolean update(CategoryVO vo) {
@@ -58,27 +57,48 @@ public class CategoryDAO extends GenericDAO {
 
         ContentValues values = DatabaseTableCategory.translate(vo);
 
-        int ack = sqLiteDatabase.update(DatabaseTableCategory.TABLE_NAME, values, DatabaseTableCategory.ID, new String[]{String.valueOf(vo.getId())});
+        int ack;
+
+        try {
+            ack = sqLiteDatabase.update(DatabaseTableCategory.TABLE_NAME, values, DatabaseTableCategory.ID + " = ?", new String[]{String.valueOf(vo.getId())});
+        } catch (Exception e) {
+            ack = 0;
+        }
 
         sqLiteDatabase.close();
 
         return ack == 1;
     }
 
-    public boolean delete (CategoryVO vo){
-
+    public boolean delete(CategoryVO vo) {
         SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getWritableDatabase();
 
-        ContentValues values = DatabaseTableCategory.translate(vo);
-
-        int ack = sqLiteDatabase.delete(DatabaseTableCategory.TABLE_NAME, DatabaseTableCategory.ID + " = " + vo.getId(), null);
+        int ack = sqLiteDatabase.delete(DatabaseTableCategory.TABLE_NAME, DatabaseTableCategory.ID + " = ?", new String[]{String.valueOf(vo.getId())});
 
         sqLiteDatabase.close();
 
         return ack == 1;
 
     }
-    public int getLastId (){
+
+    public int sequence() {
+        int result = 0;
+
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT MAX(ORDEN) FROM CATEGORY", null);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                result = cursor.getInt(0);
+            }
+            cursor.close();
+        }
+        sqLiteDatabase.close();
+
+        return result;
+    }
+
+    public int getLastId() {
 
         int num = 0;
         List<CategoryVO> result = new ArrayList<>();
@@ -100,7 +120,6 @@ public class CategoryDAO extends GenericDAO {
         return num;
 
     }
-
 
 
 }

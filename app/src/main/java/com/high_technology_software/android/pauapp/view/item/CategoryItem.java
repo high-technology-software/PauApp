@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 public class CategoryItem {
     TextView name;
-    ImageButton remove;
     ImageButton up;
     ImageButton down;
 
@@ -26,14 +25,6 @@ public class CategoryItem {
 
     public void setName(TextView name) {
         this.name = name;
-    }
-
-    public ImageButton getRemove() {
-        return remove;
-    }
-
-    public void setRemove(ImageButton remove) {
-        this.remove = remove;
     }
 
     public ImageButton getUp() {

@@ -84,19 +84,11 @@ public class CategoryListFragment extends ListFragment {
                 convertView = inflater.inflate(R.layout.list_item_category, parent, false);
                 item = new CategoryItem();
                 item.setName((TextView) convertView.findViewById(R.id.list_item_category_text));
-                item.setRemove((ImageButton) convertView.findViewById(R.id.list_item_category_remove));
                 item.setUp((ImageButton) convertView.findViewById(R.id.list_item_category_up));
                 item.setDown((ImageButton) convertView.findViewById(R.id.list_item_category_down));
                 convertView.setTag(item);
             }
             item = (CategoryItem) convertView.getTag();
-            item.getRemove().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mList.remove(position);
-                    mAdapter.notifyDataSetChanged();
-                }
-            });
             item.getUp().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
