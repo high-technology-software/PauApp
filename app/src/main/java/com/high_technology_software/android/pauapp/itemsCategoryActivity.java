@@ -37,7 +37,7 @@ import java.util.List;
 import adaptadors.ButtonAdapter;
 
 public class ItemsCategoryActivity extends AppCompatActivity {
-    private DrawerLayout drawerLayout;
+
     private GridView gridLayoutItems;
     private TextView tvAdd;
     private TextView tvDelete;
@@ -54,10 +54,10 @@ public class ItemsCategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_category);
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        tvAdd = (TextView) findViewById(R.id.tabBarAdd);
-        tvDelete = (TextView) findViewById(R.id.tabBarDelete);
-        tvAtras = (TextView) findViewById(R.id.tabBarAtras);
+
+//        tvAdd = (TextView) findViewById(R.id.tabBarAdd);
+//        tvDelete = (TextView) findViewById(R.id.tabBarDelete);
+//        tvAtras = (TextView) findViewById(R.id.tabBarAtras);
         gridLayoutItems = (GridView) findViewById(R.id.gridPrincipalItem);
         //recuperacion del id
         Bundle extras = getIntent().getExtras();
@@ -74,11 +74,13 @@ public class ItemsCategoryActivity extends AppCompatActivity {
 
         //pruebas del Adaptador de Botones
         Button botonesPan = null;
+        String desc = "";
         int id = 0;
         for (int i = 0; i < listCategory.size(); i++){
             id = listCategory.get(i).getId();
+            desc = listCategory.get(i).getName();
             botonesPan = new Button(this);
-            botonesPan.setText(Integer.toString(id));
+            botonesPan.setText(desc);
             //añadimos el boton al listener
             botonesPan.setOnClickListener(botonesPanel);
             botonesPan.setId(id);
@@ -87,52 +89,52 @@ public class ItemsCategoryActivity extends AppCompatActivity {
         }
         gridLayoutItems.setAdapter(new ButtonAdapter(botones, this));
 
-
-        tvAtras.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ActivityMainPrincipal.class);
-                startActivity(intent);
-            }
-        });
-
-        //cliclando sobre el textView permitira añadir un elemento en el gridView
-        tvAdd.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                //al pulsar saldrá un alert auxiliar para llenar los campos necesarios para crear
-                //el elemento en el GridView
-                final ItemDAO items = new ItemDAO(getApplicationContext());
-                AlertDialog.Builder builder = new AlertDialog.Builder(ItemsCategoryActivity.this);
-                LayoutInflater inflater = ItemsCategoryActivity.this.getLayoutInflater();
-                final View dialogView = inflater.inflate(R.layout.dialog_form, null);
-                builder.setView(dialogView);
-                builder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        tvName = (EditText) dialogView.findViewById(R.id.tvName);
-
-                        //cogemos el valor de los items que hemos instanciado
-                        String name = tvName.getText().toString();
-                        //obtener ultimo id
-                        int ultimoId = items.getLastId();
-                        ultimoId = ultimoId + 1;
-
-                        ItemVO cat = new ItemVO();
-                        cat.setId(ultimoId);
-                        cat.setName(name);
-
-                        baseDatosItems.create(cat, numeroBoton);
-
-                        //reiniciamos el activity para ver nuestro nuevo elemento
-                        onRestart();
-
-                    }
-                });
-                builder.show();
-            }
-        });
+//
+//        tvAtras.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(getApplicationContext(), ActivityMainPrincipal.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        //cliclando sobre el textView permitira añadir un elemento en el gridView
+//        tvAdd.setOnClickListener(new View.OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                //al pulsar saldrá un alert auxiliar para llenar los campos necesarios para crear
+//                //el elemento en el GridView
+//                final ItemDAO items = new ItemDAO(getApplicationContext());
+//                AlertDialog.Builder builder = new AlertDialog.Builder(ItemsCategoryActivity.this);
+//                LayoutInflater inflater = ItemsCategoryActivity.this.getLayoutInflater();
+//                final View dialogView = inflater.inflate(R.layout.dialog_form, null);
+//                builder.setView(dialogView);
+//                builder.setPositiveButton("ADD", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int id) {
+//                        tvName = (EditText) dialogView.findViewById(R.id.tvName);
+//
+//                        //cogemos el valor de los items que hemos instanciado
+//                        String name = tvName.getText().toString();
+//                        //obtener ultimo id
+//                        int ultimoId = items.getLastId();
+//                        ultimoId = ultimoId + 1;
+//
+//                        ItemVO cat = new ItemVO();
+//                        cat.setId(ultimoId);
+//                        cat.setName(name);
+//
+//                        baseDatosItems.create(cat, numeroBoton);
+//
+//                        //reiniciamos el activity para ver nuestro nuevo elemento
+//                        onRestart();
+//
+//                    }
+//                });
+//                builder.show();
+//            }
+//        });
     }
 
 
@@ -155,56 +157,20 @@ public class ItemsCategoryActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         final android.support.v7.app.ActionBar supportAB = getSupportActionBar();
-        supportAB.setHomeAsUpIndicator(R.drawable.ic_account_circle_black_24dp);
+        supportAB.setHomeAsUpIndicator(R.drawable.back);
         supportAB.setDisplayHomeAsUpEnabled(true);
-
-        //drawer layout (tabbar)
-        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-
         return true;
     }
-
+    //si contraseña es correcte
+    boolean passCorrecte = false;
+    String pass;
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
-        final EditText input = new EditText(ItemsCategoryActivity.this);
-        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.MATCH_PARENT);
-        input.setLayoutParams(lp);
-
-        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
-        dialogo1.setTitle("Important");
-        dialogo1.setView(input);
-        dialogo1.setMessage("Acces al panell d'administració");
-        dialogo1.setCancelable(false);
-        dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogo1, int id) {
-
-                //si contraseña es correcte
-                boolean passCorrecte = false;
-                String pass;
-                pass = input.getText().toString();
-                passCorrecte = comprobarContrasenya(pass);
-                Log.d("PANEL","Mierda");
-                if (passCorrecte){
-
-                    finish();
-                    Intent intent = new Intent(getApplicationContext(), ManageMenuActivity.class);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(getApplicationContext(), "La contrasenya es incorrecte, o l'arxiu password no existeix...", Toast.LENGTH_SHORT);
-
-                }
-
-            }
-        });
-        dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialogo1, int id) {
-                Log.d("PANEL", "NEGAR");
-            }
-        });
-        dialogo1.show();
+        finish();
+        Intent intent = new Intent(getApplicationContext(), ActivityMainPrincipal.class);
+        intent.putExtra("boton", numeroBoton);
+        startActivity(intent);
         return true;
     }
     @Override
@@ -220,29 +186,5 @@ public class ItemsCategoryActivity extends AppCompatActivity {
 
     }
 
-    private boolean comprobarContrasenya(String password){
-        boolean esCorrecte = false;
-        File path = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU/password.txt");
-        StringBuilder text = new StringBuilder();
-        if (path.exists()){
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(path));
-                String line;
 
-                while ((line = br.readLine()) != null) {
-                    if (line.toString().equals(password)){
-                        esCorrecte = true;
-                    }
-                }
-                br.close();
-            }
-            catch (IOException e) {
-                Log.d("Error", e.getMessage());
-            }
-
-        } else {
-            esCorrecte = false;
-        }
-        return esCorrecte;
-    }
 }
