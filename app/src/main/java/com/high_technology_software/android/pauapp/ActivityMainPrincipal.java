@@ -205,7 +205,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         final android.support.v7.app.ActionBar supportAB = getSupportActionBar();
-        supportAB.setHomeAsUpIndicator(R.drawable.ic_drawer);
+        supportAB.setHomeAsUpIndicator(R.drawable.ic_account_circle_black_24dp);
         supportAB.setDisplayHomeAsUpEnabled(true);
 
         //drawer layout (tabbar)

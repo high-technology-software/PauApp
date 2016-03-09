@@ -4,9 +4,11 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ScrollingTabContainerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,13 +17,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.high_technology_software.android.pauapp.controller.CategoryDAO;
 import com.high_technology_software.android.pauapp.controller.ItemDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
 import com.high_technology_software.android.pauapp.model.ItemVO;
+import com.high_technology_software.android.pauapp.view.manage.ManageMenuActivity;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -146,7 +155,7 @@ public class ItemsCategoryActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
 
         final android.support.v7.app.ActionBar supportAB = getSupportActionBar();
-        supportAB.setHomeAsUpIndicator(R.drawable.ic_drawer);
+        supportAB.setHomeAsUpIndicator(R.drawable.ic_account_circle_black_24dp);
         supportAB.setDisplayHomeAsUpEnabled(true);
 
         //drawer layout (tabbar)
@@ -157,18 +166,46 @@ public class ItemsCategoryActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id= item.getItemId();
-        switch (id) {
-            case android.R.id.home:   ///drawer al pulsar icono si está abierto lo cierro, si está cerrado lo abro
-                if(drawerLayout.isDrawerOpen(GravityCompat.START))
-                    drawerLayout.closeDrawers();
-                else
-                    drawerLayout.openDrawer(GravityCompat.START);
 
-        }
+        final EditText input = new EditText(ItemsCategoryActivity.this);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
 
+        AlertDialog.Builder dialogo1 = new AlertDialog.Builder(this);
+        dialogo1.setTitle("Important");
+        dialogo1.setView(input);
+        dialogo1.setMessage("Acces al panell d'administració");
+        dialogo1.setCancelable(false);
+        dialogo1.setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
 
-        return super.onOptionsItemSelected(item);
+                //si contraseña es correcte
+                boolean passCorrecte = false;
+                String pass;
+                pass = input.getText().toString();
+                passCorrecte = comprobarContrasenya(pass);
+                Log.d("PANEL","Mierda");
+                if (passCorrecte){
+
+                    finish();
+                    Intent intent = new Intent(getApplicationContext(), ManageMenuActivity.class);
+                    startActivity(intent);
+                }else{
+                    Toast.makeText(getApplicationContext(), "La contrasenya es incorrecte, o l'arxiu password no existeix...", Toast.LENGTH_SHORT);
+
+                }
+
+            }
+        });
+        dialogo1.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogo1, int id) {
+                Log.d("PANEL", "NEGAR");
+            }
+        });
+        dialogo1.show();
+        return true;
     }
     @Override
     protected void onRestart() {
@@ -181,5 +218,31 @@ public class ItemsCategoryActivity extends AppCompatActivity {
         startActivity(i);
         finish();
 
+    }
+
+    private boolean comprobarContrasenya(String password){
+        boolean esCorrecte = false;
+        File path = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU/password.txt");
+        StringBuilder text = new StringBuilder();
+        if (path.exists()){
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(path));
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    if (line.toString().equals(password)){
+                        esCorrecte = true;
+                    }
+                }
+                br.close();
+            }
+            catch (IOException e) {
+                Log.d("Error", e.getMessage());
+            }
+
+        } else {
+            esCorrecte = false;
+        }
+        return esCorrecte;
     }
 }
