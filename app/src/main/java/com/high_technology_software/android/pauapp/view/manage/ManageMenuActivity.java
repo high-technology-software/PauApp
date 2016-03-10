@@ -23,6 +23,24 @@ public class ManageMenuActivity extends Activity {
                 startActivity(i);
             }
         });
+
+        Button newItemButton = (Button) findViewById(R.id.itemCrud);
+        newItemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ManageMenuNewItemActivity.class);
+                startActivity(i);
+            }
+        });
+
+        Button itemButton = (Button) findViewById(R.id.itemOrder);
+        itemButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getApplicationContext(), ManageMenuItemActivity.class);
+                startActivity(i);
+            }
+        });
     }
 
 }

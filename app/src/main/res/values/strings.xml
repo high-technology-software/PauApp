@@ -6,6 +6,7 @@
     <string name="button_crud">Gestionar</string>
     <string name="button_order">Ordenar</string>
     <string name="dialog_category_title">Canviar nom de la categoria</string>
+    <string name="dialog_item_title">Sel·lecciona una categoria</string>
     <string name="category_menu_dialog_add">Afegir categoria</string>
     <string name="category_menu_dialog_save">Guardar</string>
     <string name="category_menu_dialog_exit">Sortir</string>
@@ -15,4 +16,5 @@
     <string name="cancel">Cancelar</string>
     <string name="delete">Eliminar</string>
     <string name="manage_menu_category_activity_unique">El nom de la categoria ja existeix</string>
+    <string name="spinner_blank">Sense especificar</string>
 </resources>

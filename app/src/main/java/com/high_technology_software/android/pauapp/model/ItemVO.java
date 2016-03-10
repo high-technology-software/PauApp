@@ -12,6 +12,7 @@ public class ItemVO {
     private String image;
     private Integer order;
     private CategoryVO father;
+    private String folder;
 
     public ItemVO() {
 
@@ -25,6 +26,7 @@ public class ItemVO {
         order = cursor.getInt(cursor.getColumnIndex(DatabaseTableItem.ORDER));
         father = new CategoryVO();
         father.setId(cursor.getInt(cursor.getColumnIndex(DatabaseTableItem.ID_CATEGORY)));
+        folder = cursor.getString(cursor.getColumnIndex(DatabaseTableItem.FOLDER));
     }
 
     public String getAudio() {
@@ -75,4 +77,11 @@ public class ItemVO {
         this.order = order;
     }
 
+    public String getFolder() {
+        return folder;
+    }
+
+    public void setFolder(String folder) {
+        this.folder = folder;
+    }
 }

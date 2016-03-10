@@ -3,7 +3,6 @@ package com.high_technology_software.android.pauapp.view;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +16,7 @@ import android.widget.TextView;
 import com.high_technology_software.android.pauapp.R;
 import com.high_technology_software.android.pauapp.controller.CategoryDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
-import com.high_technology_software.android.pauapp.view.item.CategoryItem;
+import com.high_technology_software.android.pauapp.view.object.CategoryObject;
 
 import java.util.List;
 
@@ -78,17 +77,17 @@ public class CategoryListFragment extends ListFragment {
         }
 
         public View getView(final int position, View convertView, ViewGroup parent) {
-            CategoryItem item = null;
+            CategoryObject item = null;
             if (convertView == null) {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(R.layout.list_item_category, parent, false);
-                item = new CategoryItem();
+                item = new CategoryObject();
                 item.setName((TextView) convertView.findViewById(R.id.list_item_category_text));
                 item.setUp((ImageButton) convertView.findViewById(R.id.list_item_category_up));
                 item.setDown((ImageButton) convertView.findViewById(R.id.list_item_category_down));
                 convertView.setTag(item);
             }
-            item = (CategoryItem) convertView.getTag();
+            item = (CategoryObject) convertView.getTag();
             item.getUp().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

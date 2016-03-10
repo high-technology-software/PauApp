@@ -14,10 +14,12 @@ public abstract class DatabaseTableItem implements BaseColumns {
     public static final String AUDIO = "audio";
     public static final String IMAGE = "image";
     public static final String ORDER = "orden";
+    public static final String FOLDER = "folder";
 
     public static final String CREATE_STATEMENT = "CREATE TABLE " + TABLE_NAME + " (" +
             ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
             ID_CATEGORY + " INTEGER REFERENCES " + DatabaseTableCategory.TABLE_NAME + "(" + DatabaseTableCategory.ID + "), " +
+            FOLDER + " TEXT UNIQUE, " +
             NAME + " TEXT, " +
             AUDIO + " TEXT, " +
             IMAGE + " TEXT, " +
@@ -28,8 +30,8 @@ public abstract class DatabaseTableItem implements BaseColumns {
     public static ContentValues translate(ItemVO vo, int idFather) {
         ContentValues result = new ContentValues();
 
-        result.put(ID, vo.getId());
         result.put(ID_CATEGORY, idFather);
+        result.put(FOLDER, vo.getFolder());
         result.put(NAME, vo.getName());
         result.put(AUDIO, vo.getAudio());
         result.put(IMAGE, vo.getImage());

@@ -1,14 +1,14 @@
-package com.high_technology_software.android.pauapp.view.item;
+package com.high_technology_software.android.pauapp.view.object;
 
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-public class CategoryItem {
+public class ItemObject {
     TextView name;
     ImageButton up;
     ImageButton down;
 
-    public CategoryItem() {
+    public ItemObject() {
     }
 
     public ImageButton getDown() {

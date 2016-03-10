@@ -3,6 +3,7 @@ package com.high_technology_software.android.pauapp.view.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +15,10 @@ import android.widget.Toast;
 
 import com.high_technology_software.android.pauapp.R;
 import com.high_technology_software.android.pauapp.controller.CategoryDAO;
+import com.high_technology_software.android.pauapp.controller.ItemDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
-import com.high_technology_software.android.pauapp.view.item.CategoryItem;
+import com.high_technology_software.android.pauapp.model.ItemVO;
+import com.high_technology_software.android.pauapp.view.object.CategoryObject;
 
 import java.util.List;
 
@@ -35,17 +38,17 @@ public class CategoryAdapter extends ArrayAdapter<CategoryVO> {
     }
 
     public View getView(final int position, View convertView, ViewGroup parent) {
-        CategoryItem item = null;
+        CategoryObject item = null;
         if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(getContext());
             convertView = inflater.inflate(R.layout.manage_menu_category_list_item, parent, false);
-            item = new CategoryItem();
+            item = new CategoryObject();
             item.setName((TextView) convertView.findViewById(R.id.manage_menu_category_list_item_name));
             item.setUp((ImageButton) convertView.findViewById(R.id.manage_menu_category_list_item_up));
             item.setDown((ImageButton) convertView.findViewById(R.id.manage_menu_category_list_item_down));
             convertView.setTag(item);
         }
-        item = (CategoryItem) convertView.getTag();
+        item = (CategoryObject) convertView.getTag();
         item.getUp().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -114,6 +117,10 @@ public class CategoryAdapter extends ArrayAdapter<CategoryVO> {
                 dialogBuilder.setPositiveButton(R.string.delete, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         if (mDAO.delete(mList.get(position))) {
+                            ItemDAO dao = new ItemDAO(mContext);
+                            for (ItemVO itemVO : dao.read(mList.get(position).getId())) {
+                                dao.delete(itemVO);
+                            }
                             mList.remove(position);
                             notifyDataSetChanged();
 

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.high_technology_software.android.pauapp.R;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
 import com.high_technology_software.android.pauapp.model.database.DatabaseTableCategory;
 
@@ -78,7 +79,6 @@ public class CategoryDAO extends GenericDAO {
         sqLiteDatabase.close();
 
         return ack == 1;
-
     }
 
     public int sequence() {
@@ -121,5 +121,26 @@ public class CategoryDAO extends GenericDAO {
 
     }
 
+    public List<CategoryVO> selector() {
+        List<CategoryVO> result = new ArrayList<>();
+
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query(DatabaseTableCategory.TABLE_NAME, null, null, null, null, null, DatabaseTableCategory.NAME);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    CategoryVO vo = new CategoryVO(cursor);
+                    result.add(vo);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+
+        sqLiteDatabase.close();
+
+        return result;
+    }
 
 }

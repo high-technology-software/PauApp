@@ -20,6 +20,12 @@
             android:name=".view.manage.ManageMenuCategoryActivity"
             android:screenOrientation="userPortrait" />
         <activity
+            android:name=".view.manage.ManageMenuNewItemActivity"
+            android:screenOrientation="userPortrait" />
+        <activity
+            android:name=".view.manage.ManageMenuItemActivity"
+            android:screenOrientation="userPortrait" />
+        <activity
             android:name=".view.ManageActivity"
             android:label="@string/title_activity_manage"
             android:theme="@style/AppTheme.NoActionBar">
