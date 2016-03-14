@@ -197,7 +197,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             //habria que mirar si el usuario que se loguea es admin ya que habria que lanzar otro activity o ocultar elementos
             Intent intent = new Intent(getApplicationContext(), ItemsCategoryActivity.class);
             //guardamos el id del boton
-            intent.putExtra("boton", v.getId());
+            intent.putExtra("category", v.getId());
             startActivity(intent);
             //Log.d("ID DEL BOTON", String.valueOf(v.getId()));
         }

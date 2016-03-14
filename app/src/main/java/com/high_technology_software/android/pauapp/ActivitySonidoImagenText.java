@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.high_technology_software.android.pauapp.controller.ItemDAO;
+import com.high_technology_software.android.pauapp.model.ItemVO;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
@@ -24,6 +26,8 @@ import adaptadors.SoundPlayer;
 
 
 public class ActivitySonidoImagenText extends AppCompatActivity {
+
+    private ItemDAO mDAO;
     private ImageView im;
     private Button bot;
     private TextView tex;
@@ -37,6 +41,7 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
     private SoundPlayer mPlayer;
 
     private int numeroBoton;
+    private int mCategory;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,20 +51,25 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
 
         if (extras != null) {
             numeroBoton = extras.getInt("boton");
+            mCategory = extras.getInt("category");
         }
+
+        mDAO = new ItemDAO(getApplicationContext());
+        ItemVO vo = mDAO.readById(numeroBoton);
 
         //referencias al xml
         im = (ImageView) findViewById(R.id.myImageView);
         bot = (Button) findViewById(R.id.botSound);
         tex = (TextView) findViewById(R.id.texteActivitySoundImg);
+        tex.setText(vo.getName());
 
         //obtener path de la imagen TODO provisional estatica
         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU/item_prueba/minion.png";
-        File ruta = new File(path);
+        File ruta = new File(vo.getImage());
 
         //sonido
         String pathSound = Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU/item_prueba/prueba.m4a";
-        final Uri uriSound = stringToUri(pathSound);
+        final Uri uriSound = stringToUri(vo.getAudio());
         mPlayer = new SoundPlayer(this, uriSound);
 
         int size = (int) Math.ceil(Math.sqrt(MAX_WIDTH * MAX_HEIGHT));
@@ -111,9 +121,14 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!mPlayer.isPlaying()){
             //volvemos a la pantalla de inicio
-            Intent intent = new Intent(getApplicationContext(), ItemsCategoryActivity.class);
-            intent.putExtra("boton", numeroBoton);
-            startActivity(intent);
+//            Intent intent = new Intent(getApplicationContext(), ItemsCategoryActivity.class);
+//            intent.putExtra("boton", numeroBoton);
+//            startActivity(intent);
+
+            Intent data = new Intent();
+            data.putExtra("category", mCategory);
+            setResult(RESULT_OK, data);
+            finish();
         }
         return true;
     }

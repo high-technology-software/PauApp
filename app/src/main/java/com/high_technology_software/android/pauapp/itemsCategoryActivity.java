@@ -1,36 +1,22 @@
 package com.high_technology_software.android.pauapp;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.ScrollingTabContainerView;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.high_technology_software.android.pauapp.controller.CategoryDAO;
 import com.high_technology_software.android.pauapp.controller.ItemDAO;
 import com.high_technology_software.android.pauapp.model.CategoryVO;
 import com.high_technology_software.android.pauapp.model.ItemVO;
-import com.high_technology_software.android.pauapp.view.manage.ManageMenuActivity;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +34,14 @@ public class ItemsCategoryActivity extends AppCompatActivity {
 
     //array botones por cambiar por otra cosa
     private ArrayList<Button> botones = new ArrayList<Button>();
+    private static ButtonAdapter botPrueba;
 
     private int numeroBoton;
+    private int mCategory;
+
+    private List<ItemVO> mList;
+    private ItemDAO mDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,22 +55,22 @@ public class ItemsCategoryActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
-            numeroBoton = extras.getInt("boton");
+            mCategory = extras.getInt("category");
         }
 /*
         Log.e("NUMERO", String.valueOf(getIntent().getExtras().getInt("boton")));
         numeroBoton = getIntent().getExtras().getInt("boton");
 */
-        ItemDAO dao = new ItemDAO(this);
-        List<ItemVO> listCategory = dao.read(numeroBoton);
+        mDao = new ItemDAO(this);
+        mList = mDao.read(mCategory);
 
         //pruebas del Adaptador de Botones
         Button botonesPan = null;
         String desc = "";
         int id = 0;
-        for (int i = 0; i < listCategory.size(); i++){
-            id = listCategory.get(i).getId();
-            desc = listCategory.get(i).getName();
+        for (int i = 0; i < mList.size(); i++){
+            id = mList.get(i).getId();
+            desc = mList.get(i).getName();
             botonesPan = new Button(this);
             botonesPan.setText(desc);
             //añadimos el boton al listener
@@ -87,7 +79,8 @@ public class ItemsCategoryActivity extends AppCompatActivity {
             botones.add(botonesPan);
 
         }
-        gridLayoutItems.setAdapter(new ButtonAdapter(botones, this));
+        botPrueba = new ButtonAdapter(botones, this);
+        gridLayoutItems.setAdapter(botPrueba);
 
 //
 //        tvAtras.setOnClickListener(new View.OnClickListener() {
@@ -145,9 +138,9 @@ public class ItemsCategoryActivity extends AppCompatActivity {
             //habria que mirar si el usuario que se loguea es admin ya que habria que lanzar otro activity o ocultar elementos
             Intent intent = new Intent(getApplicationContext(), ActivitySonidoImagenText.class);
             //guardamos el id del boton
+            intent.putExtra("category", mCategory);
             intent.putExtra("boton", v.getId());
-            finish();
-            startActivity(intent);
+            startActivityForResult(intent, RESULT_OK);
             //Log.d("ID DEL BOTON", String.valueOf(v.getId()));
         }
     };
@@ -168,23 +161,28 @@ public class ItemsCategoryActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         finish();
-        Intent intent = new Intent(getApplicationContext(), ActivityMainPrincipal.class);
-        intent.putExtra("boton", numeroBoton);
-        startActivity(intent);
+//        Intent intent = new Intent(getApplicationContext(), ActivityMainPrincipal.class);
+//        intent.putExtra("boton", numeroBoton);
+//        intent.putExtra("category", numeroBoton);
+//        startActivity(intent);
         return true;
     }
+
     @Override
-    protected void onRestart() {
-
-        // TODO Auto-generated method stub
-        super.onRestart();
-        Intent i = new Intent(ItemsCategoryActivity.this, ItemsCategoryActivity.class);
-        //asi no perdemos el valor del padre
-        i.putExtra("boton", numeroBoton);
-        startActivity(i);
-        finish();
-
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i("TAG", "onSaveInstanceState(Bundle savedInstanceState)");
+        savedInstanceState.putInt("category", numeroBoton);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            if (data.hasExtra("category")) {
+                mCategory = data.getExtras().getInt("category");
+                mList = mDao.read(mCategory);
+            }
+        }
+    }
 
 }

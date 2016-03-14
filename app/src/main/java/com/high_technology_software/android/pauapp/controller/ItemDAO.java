@@ -19,6 +19,24 @@ public class ItemDAO extends GenericDAO {
         super(context);
     }
 
+    public ItemVO readById(int id) {
+        ItemVO result = new ItemVO();
+        SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.query(DatabaseTableItem.TABLE_NAME, null, DatabaseTableItem.ID + " = ?", new String[]{String.valueOf(id)}, null, null, null);
+
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                result = new ItemVO(cursor);
+            }
+            cursor.close();
+        }
+
+        sqLiteDatabase.close();
+
+        return result;
+    }
+
     public List<ItemVO> read(int father) {
         List<ItemVO> result = new ArrayList<>();
         SQLiteDatabase sqLiteDatabase = mDatabaseHelper.getReadableDatabase();

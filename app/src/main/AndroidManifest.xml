@@ -10,9 +10,10 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ActivityMainPrincipal" />
-        <activity android:name=".DifferentMenuActivity" />
-        <activity android:name=".ItemsCategoryActivity" />
+        <activity android:name=".DifferentMenuActivity"
+                  android:screenOrientation="userLandscape" />
+        <activity android:name=".ItemsCategoryActivity"
+                  android:screenOrientation="userLandscape" />
         <activity
             android:name=".view.manage.ManageMenuActivity"
             android:screenOrientation="userPortrait" />
@@ -26,16 +27,16 @@
             android:name=".view.manage.ManageMenuItemActivity"
             android:screenOrientation="userPortrait" />
         <activity
-            android:name=".view.ManageActivity"
-            android:label="@string/title_activity_manage"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:name=".ActivityMainPrincipal"
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".ActivitySonidoImagenText"
+                  android:screenOrientation="userLandscape" />
     </application>
 
 </manifest>
