@@ -122,6 +122,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             botonesPan = new Button(this);
             botonesPan.setText(desc);
             //añadimos el boton al listener
+            botonesPan.setOnClickListener(botonesPanel);
             botonesPan.setId(id);
             botones.add(botonesPan);
 
@@ -209,13 +210,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
     }
 
 
-    public void itemClicklistener(int position) {
-        Intent intent = new Intent(context, ItemsCategoryActivity.class);
-        //guardamos el id del boton
-        intent.putExtra("boton", botones.get(position).getId());
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
-    }
+
 
 
 

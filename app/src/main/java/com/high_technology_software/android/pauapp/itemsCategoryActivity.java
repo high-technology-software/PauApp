@@ -50,6 +50,7 @@ public class ItemsCategoryActivity extends AppCompatActivity {
     private ArrayList<Button> botones = new ArrayList<Button>();
 
     private int numeroBoton;
+    private static ButtonAdapter botPrueba;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,7 +88,9 @@ public class ItemsCategoryActivity extends AppCompatActivity {
             botones.add(botonesPan);
 
         }
-        gridLayoutItems.setAdapter(new ButtonAdapter(botones, this));
+        botPrueba = new ButtonAdapter(botones, this);
+        gridLayoutItems.setAdapter(botPrueba);
+
 
 //
 //        tvAtras.setOnClickListener(new View.OnClickListener() {
@@ -185,6 +188,14 @@ public class ItemsCategoryActivity extends AppCompatActivity {
         finish();
 
     }
-
+    private void scrollMygridViewToBottom() {
+        gridLayoutItems.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                gridLayoutItems.setSelection(botPrueba.getCount() - 1);
+            }
+        });
+    }
 
 }
