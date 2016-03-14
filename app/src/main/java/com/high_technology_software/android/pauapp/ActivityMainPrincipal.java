@@ -1,5 +1,6 @@
 package com.high_technology_software.android.pauapp;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -7,17 +8,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Environment;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.DragEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,17 +58,27 @@ public class ActivityMainPrincipal extends AppCompatActivity {
     private GridView gvPanelPal;
     private TextView tvAdd, tvDelete, tvAdmin;
     private EditText tvName;
-    private Button botonesPan = null;
+    private static Button botonesPan = null;
+
+    private static Context context;
     //base de datos
     //private SqlControllerBaseDatosBotones sqlControllerBDB =  new SqlControllerBaseDatosBotones(this);
     CategoryDAO baseDatosCategory = new CategoryDAO(this);
     //botones
     private ArrayList<Button> botones = new ArrayList<Button>();
+    private static ButtonAdapter botPrueba;
+
+
+    private ViewTreeObserver.OnScrollChangedListener mOnScrollChangedListener;
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_main_principal);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+        //pruebas context
+        context = getApplicationContext();
 
         //crear carpeta inicio para categorias e items
         File directorio = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU");
@@ -82,10 +98,6 @@ public class ActivityMainPrincipal extends AppCompatActivity {
 
 
 
-        tvAdd = (TextView) findViewById(R.id.tabBarAdd);
-        tvDelete = (TextView) findViewById(R.id.tabBarDelete);
-        //admin
-        tvAdmin = (TextView) findViewById(R.id.tabBarAdmin);
 
         gvPanelPal = (GridView) findViewById(R.id.gridPrincipal);
         gvPanelPal.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -110,13 +122,19 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             botonesPan = new Button(this);
             botonesPan.setText(desc);
             //añadimos el boton al listener
-            botonesPan.setOnClickListener(botonesPanel);
             botonesPan.setId(id);
             botones.add(botonesPan);
 
         }
-        final ButtonAdapter botPrueba = new ButtonAdapter(botones, this);
+
+        botPrueba = new ButtonAdapter(botones, context);
         gvPanelPal.setAdapter(botPrueba);
+
+
+        scrollMygridViewToBottom();
+
+        //botPrueba.notifyDataSetChanged();
+
 
         //cliclando sobre el textView permitira añadir un elemento en el gridView
 //        tvAdd.setOnClickListener(new View.OnClickListener() {
@@ -189,6 +207,23 @@ public class ActivityMainPrincipal extends AppCompatActivity {
 //        });
 
     }
+
+
+    public void itemClicklistener(int position) {
+        Intent intent = new Intent(context, ItemsCategoryActivity.class);
+        //guardamos el id del boton
+        intent.putExtra("boton", botones.get(position).getId());
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+    }
+
+
+
+
+
+
+
+
 
     View.OnClickListener botonesPanel = new View.OnClickListener() {
         @Override
@@ -343,5 +378,15 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             esCorrecte = false;
         }
         return esCorrecte;
+    }
+
+    private void scrollMygridViewToBottom() {
+        gvPanelPal.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                gvPanelPal.setSelection(botPrueba.getCount() - 1);
+            }
+        });
     }
 }
