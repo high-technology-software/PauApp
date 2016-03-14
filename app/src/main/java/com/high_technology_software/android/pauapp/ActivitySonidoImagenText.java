@@ -1,5 +1,6 @@
 package com.high_technology_software.android.pauapp;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.v4.view.GravityCompat;
@@ -35,13 +36,17 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
     //obtener el path del sonido TODO provisional estatica
     private SoundPlayer mPlayer;
 
-
+    private int numeroBoton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activity_sonido_imagen_text);
         //de itemsCategoryHay que traerse datos
+        Bundle extras = getIntent().getExtras();
 
+        if (extras != null) {
+            numeroBoton = extras.getInt("boton");
+        }
 
         //referencias al xml
         im = (ImageView) findViewById(R.id.myImageView);
@@ -96,10 +101,9 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
 
         final android.support.v7.app.ActionBar supportAB = getSupportActionBar();
         //seleccionamos el tipo de icono a mostrar
-        supportAB.setHomeAsUpIndicator(R.drawable.ic_change_history_black_24dp);
+        supportAB.setHomeAsUpIndicator(R.drawable.back);
         //dibujamos la flecha
         supportAB.setDisplayHomeAsUpEnabled(true);
-
         return true;
     }
 
@@ -107,8 +111,9 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!mPlayer.isPlaying()){
             //volvemos a la pantalla de inicio
-            finish();
-
+            Intent intent = new Intent(getApplicationContext(), ItemsCategoryActivity.class);
+            intent.putExtra("boton", numeroBoton);
+            startActivity(intent);
         }
         return true;
     }

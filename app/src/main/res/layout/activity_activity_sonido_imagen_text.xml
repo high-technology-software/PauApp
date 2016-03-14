@@ -14,7 +14,7 @@
         tools:context="com.high_technology_software.android.pauapp.ActivitySonidoImagenText">
 
         <LinearLayout
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
@@ -23,63 +23,54 @@
             android:weightSum="1">
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:orientation="vertical"
+                android:layout_width="297dp"
+                android:layout_height="match_parent">
 
                 <ImageView
                     android:layout_width="match_parent"
-                    android:layout_height="220dp"
+                    android:layout_height="270dp"
                     android:id="@+id/myImageView"
                     android:contentDescription="visualizador_de_imagenes" />
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="95dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="TEXTE VA AQUI"
-                    android:id="@+id/texteActivitySoundImg"
-                    android:gravity="center" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:orientation="horizontal"
+                android:orientation="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_gravity="center_horizontal"
                 android:weightSum="1">
 
                 <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.48"></LinearLayout>
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="95dp"
+                    android:layout_weight="0.56"
+                    android:gravity="top">
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="57dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="0.55" >
-
-                    <Button
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:text="TEXTE VA AQUI"
+                        android:id="@+id/texteActivitySoundImg"
+                        android:gravity="center" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="bottom">
+
+                    <Button
+                        android:layout_width="261dp"
+                        android:layout_height="140dp"
                         android:text="New Button"
                         android:id="@+id/botSound" />
                 </LinearLayout>
 
-                <LinearLayout
-                    android:orientation="vertical"
-                    android:layout_width="91dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical" />
             </LinearLayout>
+
         </LinearLayout>
     </RelativeLayout>
 

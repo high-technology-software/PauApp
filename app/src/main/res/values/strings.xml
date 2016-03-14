@@ -17,4 +17,5 @@
     <string name="delete">Eliminar</string>
     <string name="manage_menu_category_activity_unique">El nom de la categoria ja existeix</string>
     <string name="spinner_blank">Sense especificar</string>
+    <string name="ADD">ADD</string>
 </resources>
