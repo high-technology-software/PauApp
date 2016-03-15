@@ -63,6 +63,8 @@ public class ActivitySonidoImagenText extends AppCompatActivity {
         tex = (TextView) findViewById(R.id.texteActivitySoundImg);
         tex.setText(vo.getName());
 
+        bot.setBackgroundResource(R.drawable.sonido2);
+        //bot.setBackgroundResource(R.drawable.sound_audio_devices);
         //obtener path de la imagen TODO provisional estatica
         String path = Environment.getExternalStorageDirectory().getAbsolutePath() + "/APLICACIO_PAU/item_prueba/minion.png";
         File ruta = new File(vo.getImage());

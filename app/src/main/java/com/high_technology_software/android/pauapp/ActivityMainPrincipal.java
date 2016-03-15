@@ -58,6 +58,7 @@ public class ActivityMainPrincipal extends AppCompatActivity {
     CategoryDAO baseDatosCategory = new CategoryDAO(this);
     //botones
     private ArrayList<Button> botones = new ArrayList<Button>();
+    private static ButtonAdapter botPrueba;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,9 +116,9 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             botones.add(botonesPan);
 
         }
-        final ButtonAdapter botPrueba = new ButtonAdapter(botones, this);
+        botPrueba = new ButtonAdapter(botones, this);
         gvPanelPal.setAdapter(botPrueba);
-
+        scrollMygridViewToBottom();
         //cliclando sobre el textView permitira añadir un elemento en el gridView
 //        tvAdd.setOnClickListener(new View.OnClickListener() {
 //
@@ -343,5 +344,14 @@ public class ActivityMainPrincipal extends AppCompatActivity {
             esCorrecte = false;
         }
         return esCorrecte;
+    }
+    private void scrollMygridViewToBottom() {
+        gvPanelPal.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                gvPanelPal.setSelection(botPrueba.getCount() - 1);
+            }
+        });
     }
 }

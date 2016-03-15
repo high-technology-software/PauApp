@@ -82,6 +82,8 @@ public class ItemsCategoryActivity extends AppCompatActivity {
         botPrueba = new ButtonAdapter(botones, this);
         gridLayoutItems.setAdapter(botPrueba);
 
+        scrollMygridViewToBottom();
+
 //
 //        tvAtras.setOnClickListener(new View.OnClickListener() {
 //            @Override
@@ -184,5 +186,13 @@ public class ItemsCategoryActivity extends AppCompatActivity {
             }
         }
     }
-
+    private void scrollMygridViewToBottom() {
+        gridLayoutItems.post(new Runnable() {
+            @Override
+            public void run() {
+                // Select the last row so it will scroll into view...
+                gridLayoutItems.setSelection(botPrueba.getCount() - 1);
+            }
+        });
+    }
 }
