@@ -97,7 +97,7 @@ public class NewItemAdapter extends ArrayAdapter<ItemVO> {
 
         for (File folder : directory.listFiles()) {
             String filename = folder.getName();
-            if (filename.endsWith("mp3")) {
+            if (filename.endsWith("mp3") || filename.endsWith("m4a")) {
                 vo.setAudio(folder.getAbsolutePath());
             } else if (filename.endsWith("png")) {
                 vo.setImage(folder.getAbsolutePath());
