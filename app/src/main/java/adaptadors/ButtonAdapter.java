@@ -47,7 +47,7 @@ public class ButtonAdapter extends BaseAdapter {
             b = (Button) convertView;
 
         }
-        b.setHeight(pxToDp(400));
+        b.setHeight(pxToDp(200));
         return b;
     }
 

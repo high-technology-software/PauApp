@@ -95,28 +95,14 @@ public class NewItemAdapter extends ArrayAdapter<ItemVO> {
         File directory = new File(path);
         List<String> directories = new ArrayList<>();
 
+        vo.setName(vo.getFolder());
+
         for (File folder : directory.listFiles()) {
             String filename = folder.getName();
-            if (filename.endsWith("mp3") || filename.endsWith("m4a")) {
+            if (filename.endsWith("mp3") || filename.endsWith("m4a") || filename.endsWith("3gpp")) {
                 vo.setAudio(folder.getAbsolutePath());
-            } else if (filename.endsWith("png")) {
+            } else if (filename.endsWith("png") || filename.endsWith("jpg")) {
                 vo.setImage(folder.getAbsolutePath());
-            } else {
-                StringBuilder sb = new StringBuilder();
-                try{
-                    FileInputStream is = new FileInputStream(folder);
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "UTF-8"));
-                    String line = null;
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line);
-                    }
-                    is.close();
-                } catch(OutOfMemoryError om){
-                    om.printStackTrace();
-                } catch(Exception ex){
-                    ex.printStackTrace();
-                }
-                vo.setName(sb.toString());
             }
         }
 
